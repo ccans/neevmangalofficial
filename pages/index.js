@@ -1,8 +1,10 @@
+import React, { useState } from 'react';
+import Particles from 'react-particles-js';
+
 import Head from 'next/head'
 import Header from "../components/Header";
-import Particles from 'react-particles-js';
 import Dropdown from "../components/Dropdown";
-import React, { useState } from 'react';
+import Coverpage from '../components/Coverpage';
 
 const particleParams = {
   "particles": {
@@ -76,7 +78,7 @@ const particleParams = {
         "mode": "repulse"
       },
       "onclick": {
-        "enable": true,
+        "enable": false,
         "mode": "push"
       },
       "resize": true
@@ -112,7 +114,8 @@ const particleParams = {
 
 export default function Home() {
 
-  const [rotate, setRotate] = useState(false);
+  const [droppedDown, toggleDropDown] = useState(false);
+  const [coverPageDown, setCover] = useState(false);
 
   return (
     <div>
@@ -122,16 +125,17 @@ export default function Home() {
       </Head>
 
       <main>
-        <Header rotate={rotate} setRotate={setRotate}/>
-        <Dropdown rotate={rotate} />
+        <Header droppedDown={droppedDown} toggleDropDown={toggleDropDown} setCover={setCover}/>
+        <Dropdown droppedDown={droppedDown} />
+        <Coverpage coverPageDown={coverPageDown} setCover={setCover}/>
         <div className="fixed w-screen h-screen">
           <Particles params={particleParams}  />
         </div>
-        <div className="h-screen bg-design"></div>
+        <div className="h-screen bg-design white"></div>
       </main>
 
-      <footer>
-        
+      <footer className="fixed bottom-0 w-screen text-center text-gray-300">
+        Programmed by Neev Mangal
       </footer>
     </div>
   )

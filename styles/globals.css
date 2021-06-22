@@ -31,6 +31,9 @@
   animation: rotate-back-keyframes 1s;
  }
 
+ .display-animation {
+  animation: display-animation-keyframes 2s;
+ }
 
  @keyframes rotate-keyframes {
   from {
@@ -56,8 +59,23 @@
   
  }
 
+ @keyframes display-animation-keyframes {
+  from {
+   opacity: 0;
+  }
+ 
+  to {
+   opacity: 1;
+  }
+
+  
+ }
+
+
  .transition-all {
   transition-duration: 300ms;
  }
-
+ .t-duration-1000 {
+   transition-duration: 1000ms !important;
+ }
  

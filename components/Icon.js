@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-function Icon({rotate, setRotate}) {
+function Icon({droppedDown, toggleDropDown}) {
     
       return (
         <div
-          onClick={() => setRotate(!rotate)}
-          className={rotate ? "rotate h-7 m-5 animate-pulse" : "rotate-back h-7 m-5 animate-pulse"}
+          onClick={() => toggleDropDown(!droppedDown)}
+          className={droppedDown ? "rotate h-7 m-5 animate-pulse" : "rotate-back h-7 m-5 animate-pulse"}
           >
 
         <img src="https://img.icons8.com/ios-filled/50/000000/diamond--v1.png"
