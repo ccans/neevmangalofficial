@@ -8,8 +8,6 @@ import Coverpage from '../components/Coverpage';
 
 function blog() {
 
-    const [droppedDown, toggleDropDown] = useState(false);
-    const [coverPageDown, setCover] = useState(false);
 
     return (
         <div>
@@ -19,9 +17,7 @@ function blog() {
             </Head>
 
             <main>
-                <Header droppedDown={droppedDown} toggleDropDown={toggleDropDown} setCover={setCover}/>
-                <Dropdown droppedDown={droppedDown} />
-                <Coverpage coverPageDown={coverPageDown} setCover={setCover}/>
+
             </main>
 
             <footer className="fixed bottom-0 w-screen text-center text-gray-300">

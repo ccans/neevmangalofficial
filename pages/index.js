@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import Particles from 'react-particles-js';
 
 import Head from 'next/head'
-import Header from "../components/Header";
-import Dropdown from "../components/Dropdown";
-import Coverpage from '../components/Coverpage';
+
 
 const particleParams = {
   "particles": {
@@ -114,8 +112,7 @@ const particleParams = {
 
 export default function Home() {
 
-  const [droppedDown, toggleDropDown] = useState(false);
-  const [coverPageDown, setCover] = useState(false);
+  
 
   return (
     <div>
@@ -125,9 +122,6 @@ export default function Home() {
       </Head>
 
       <main>
-        <Header droppedDown={droppedDown} toggleDropDown={toggleDropDown} setCover={setCover}/>
-        <Dropdown droppedDown={droppedDown} />
-        <Coverpage coverPageDown={coverPageDown} setCover={setCover}/>
         <div className="fixed w-screen h-screen">
           <Particles params={particleParams}  />
         </div>
