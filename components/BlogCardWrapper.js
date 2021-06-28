@@ -14,7 +14,7 @@ function BlogCardWrapper({id}) {
                 scale:1,
                 opacity: 1,
                 transition: {
-                    delay: id*.2
+                    delay: .4 + (id*.1)
                 }
             }
 
