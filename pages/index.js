@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Particles from 'react-particles-js';
-
+import MainStripe from "../components/MainStripe";
 import Head from 'next/head'
 
 
@@ -125,12 +125,11 @@ export default function Home() {
         <div className="fixed w-screen h-screen">
           <Particles params={particleParams}  />
         </div>
-        <div className="h-screen bg-design white"></div>
+        <div className="h-screen bg-design white">
+            <MainStripe />
+        </div>
       </main>
 
-      <footer className="fixed bottom-0 w-screen text-center text-gray-300">
-        Programmed by Neev Mangal
-      </footer>
     </div>
   )
 }
