@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Particles from 'react-particles-js';
 import MainStripe from "../components/MainStripe";
+import BlogCardContainer from '../components/BlogCardContainer';
 import Head from 'next/head'
 
 
@@ -125,8 +126,9 @@ export default function Home() {
         <div className="fixed w-screen h-screen">
           <Particles params={particleParams}  />
         </div>
-        <div className="h-screen bg-design white">
+        <div className="h-screen bg-design white flex pt-16">
             <MainStripe />
+            <BlogCardContainer />
         </div>
       </main>
 
