@@ -8,6 +8,7 @@ function BlogCardContainer() {
 
     return (
         <div className="block flex-grow pt-4">
+            {/* Something like "recent blog entries" at the top here */}
             {elements}
         </div>
     )
