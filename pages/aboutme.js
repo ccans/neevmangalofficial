@@ -10,7 +10,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <div className="h-screen bg-design white flex pt-16">
+        <div className="h-screen bg-design bg-black flex pt-16 z-30 grid">
             
         </div>
       </main>

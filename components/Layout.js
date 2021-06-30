@@ -3,17 +3,17 @@ import Dropdown from "./Dropdown";
 import Coverpage from './Coverpage';
 import React, { useState, useEffect } from 'react';
 
-export default function Layout({ children }) {
+export default function Layout({ children, aboutMe, aboutMeToggle }) {
     const [droppedDown, toggleDropDown] = useState(false);
     const [coverPageDown, setCover] = useState(false);
 
-    const timer = setTimeout(() => {
-        setCover(false);
-      }, 1000);
+    // const timer = setTimeout(() => {
+    //     setCover(false);
+    //   }, 1000);
 
-    useEffect(() => {
-        setCover(true);
-      }, []);
+    // useEffect(() => {
+    //     setCover(true);
+    //   }, []);
 
     return (
         <div>

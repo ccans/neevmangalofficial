@@ -10,7 +10,7 @@ function Header({droppedDown, toggleDropDown, setCover}) {
             <div className = "ml-4 md:flex-grow justify-left max-w-md hidden md:flex"> 
                 <HeaderItem title="Explore" setCover={setCover} address="blog"/>
                 <HeaderItem title="About Me" setCover={setCover} address="aboutme"/>
-                <HeaderItem title="Accomplishments" setCover={setCover} address=" "/>
+                <HeaderItem title="Accomplishments" setCover={setCover} address=""/>
             </div>
             <div>
                 <Icon droppedDown={droppedDown} toggleDropDown={toggleDropDown} />

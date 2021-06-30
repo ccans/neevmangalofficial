@@ -111,7 +111,7 @@ const particleParams = {
   "retina_detect": true
 }
 
-export default function Home() {
+export default function Home({aboutMe}) {
 
   
 
@@ -126,7 +126,7 @@ export default function Home() {
         <div className="fixed w-screen h-screen">
           <Particles params={particleParams}  />
         </div>
-        <div className="h-screen bg-design white flex pt-16">
+        <div className={aboutMe ? "h-screen bg-design black flex pt-16" :"h-screen bg-design white flex pt-16"}>
             <MainStripe />
             <BlogCardContainer />
         </div>

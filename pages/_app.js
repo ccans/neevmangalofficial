@@ -1,9 +1,13 @@
 import '../styles/globals.css'
 import Layout from "../components/Layout"
+import React, { useState } from 'react';
 
 function MyApp({ Component, pageProps }) {
+
+  const [aboutMe, aboutMeToggle] = useState(false);
+
   return (
-    <Layout> <Component {...pageProps} /> </Layout>
+    <Layout aboutMe={aboutMe} aboutMeToggle={aboutMeToggle}> <Component {...pageProps} /> </Layout>
   )
 }
 
