@@ -3,7 +3,7 @@ import Particles from 'react-particles-js';
 import MainStripe from "../components/MainStripe";
 import BlogCardContainer from '../components/BlogCardContainer';
 import Head from 'next/head'
-
+import { motion, AnimatePresence } from "framer-motion"
 
 const particleParams = {
   "particles": {
@@ -116,22 +116,22 @@ export default function Home({aboutMe}) {
   
 
   return (
-    <div>
-      <Head>
-        <title>Home | Neev Mangal</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <div>
+        <Head>
+          <title>Home | Neev Mangal</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main>
-        <div className="fixed w-screen h-screen">
-          <Particles params={particleParams}  />
-        </div>
-        <div className={aboutMe ? "h-screen bg-design black flex pt-16" :"h-screen bg-design white flex pt-16"}>
-            <MainStripe />
-            <BlogCardContainer />
-        </div>
-      </main>
-
-    </div>
+        
+        <main>
+          <div className="fixed w-screen h-screen">
+            <Particles params={particleParams}  />
+          </div>
+            <div className="h-screen bg-design white flex pt-16">
+              <MainStripe />
+              <BlogCardContainer />
+            </div>
+        </main>
+      </div>
   )
 }

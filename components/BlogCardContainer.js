@@ -4,7 +4,7 @@ import BlogCardWrapper from "./BlogCardWrapper"
 
 function BlogCardContainer() {
 
-    const elements = [<BlogCardWrapper id="1" />, <BlogCardWrapper id="2" />, <BlogCardWrapper id="3" />];
+    const elements = [<BlogCardWrapper id="1" />, <BlogCardWrapper id="2" />, <BlogCardWrapper id="3" />, <BlogCardWrapper id="4" />];
 
     return (
         <div className="block flex-grow pt-4">

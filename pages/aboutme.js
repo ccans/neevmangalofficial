@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Head from 'next/head'
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function Home() {
   return (
-    <div>
+      <div>
       <Head>
         <title> About Me | Neev Mangal</title>
         <link rel="icon" href="/favicon.ico" />
@@ -14,7 +15,6 @@ export default function Home() {
             
         </div>
       </main>
-
     </div>
   )
 }
