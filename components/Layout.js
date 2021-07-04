@@ -4,13 +4,18 @@ import Coverpage from './Coverpage';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 
+
+  
+
 export default function Layout({ children, router }) {
     const [droppedDown, toggleDropDown] = useState(false);
     const [coverPageDown, setCover] = useState(false);
+    const [theme, switchTheme] = useState(false);
+    
 
     return (
-        <div>
-            <Header droppedDown={droppedDown} toggleDropDown={toggleDropDown} setCover={setCover}/>
+        <div className={theme ? "": ""} >
+            <Header droppedDown={droppedDown} toggleDropDown={toggleDropDown} setCover={setCover} switchTheme={switchTheme} theme={theme}/>
             <Dropdown droppedDown={droppedDown} />
             <Coverpage coverPageDown={coverPageDown} setCover={setCover}/>
             <AnimatePresence exitBeforeEnter>

@@ -10,8 +10,8 @@ function BlogCardContainer() {
     return (
         <div className="block flex-grow pt-4 overflow-hidden" style={{boxShadow: "0 8px 6px -6px black"}}>
 
-            <div className="pl-10" > 
-                <h1 className="text-7xl tracking-wide" style={{fontFamily: "Bebas Neue"}}> Blog </h1>
+            <div className="pl-12" > 
+                <h1 className="text-7xl tracking-wide dark:text-white" style={{fontFamily: "Bebas Neue"}}> Blog </h1>
             </div>
             {elements}
         </div>

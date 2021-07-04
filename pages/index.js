@@ -111,6 +111,8 @@ const particleParams = {
   "retina_detect": true
 }
 
+// ADD ACCOMPLISHMENTS!!!!!!!!!!!!!!!!!!!!!!!!!!! AND ALSO ADD the upfront blog introduction.
+
 export default function Home({aboutMe}) {
 
   
@@ -127,7 +129,7 @@ export default function Home({aboutMe}) {
           <div className="fixed w-screen h-screen">
             <Particles params={particleParams}  />
           </div>
-            <div className="h-screen bg-design white flex pt-16">
+            <div className="h-screen bg-design white flex pt-16 dark:bg-gray-800">
               <MainStripe />
               <BlogCardContainer />
             </div>

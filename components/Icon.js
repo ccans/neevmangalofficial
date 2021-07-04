@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 
-function Icon({droppedDown, toggleDropDown}) {
+function Icon({droppedDown, toggleDropDown, switchTheme, theme}) {
     
+  function masterSwitch() {
+    switchTheme(!theme);
+    toggleDropDown(!droppedDown);
+  }
+
       return (
         <div
-          onClick={() => toggleDropDown(!droppedDown)}
+          onClick={() => masterSwitch()}
           className={droppedDown ? "rotate h-7 m-5 animate-pulse" : "rotate-back h-7 m-5 animate-pulse"}
           >
 
