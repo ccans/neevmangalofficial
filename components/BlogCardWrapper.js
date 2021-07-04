@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 
 function BlogCardWrapper({id}) {
     return (
-        <motion.div className="p-1 w-auto h-1/4 flex justify-center"initial="hidden" animate="visible" variants={{
+        <motion.div className="p-1 w-auto md:h-1/4 h-80 flex justify-center"initial="hidden" animate="visible" variants={{
             hidden: {
                 translateY: -100,
                 scale: .8,

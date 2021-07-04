@@ -8,7 +8,7 @@ function BlogCardContainer() {
     const elements = [<BlogCardWrapper id="1" />, <BlogCardWrapper id="2" />, <BlogCardWrapper id="3" />, <BlogCardWrapper id="4" />];
 
     return (
-        <div className="block flex-grow pt-4 overflow-hidden" style={{boxShadow: "0 8px 6px -6px black"}}>
+        <div className="block flex-grow pt-4 overflow-hidden h-auto" style={{boxShadow: "0 8px 6px -6px black"}}>
 
             <div className="pl-12" > 
                 <h1 className="text-7xl tracking-wide dark:text-white" style={{fontFamily: "Bebas Neue"}}> Blog </h1>
