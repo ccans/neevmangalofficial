@@ -1,8 +1,12 @@
-function Dropdowncomponent({title}) {
+import Link from 'next/link'
+
+function Dropdowncomponent({title, address}) {
     return (
-        <div className="max-h-px">
-           <p className = "cursor-pointer center">{title}</p> 
-        </div>
+        <Link href={"/" + address}>  
+            <div className="max-h-px">
+            <p className = "cursor-pointer center">{title}</p> 
+            </div>
+        </Link>
     )
 }
 
