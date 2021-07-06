@@ -1,11 +1,28 @@
 import BlogCard from "./BlogCard"
-import { motion } from "framer-motion"
+
+import React, { useEffect } from 'react';
+import { motion, useAnimation } from "framer-motion"
+import { useInView } from 'react-intersection-observer'
+
 
 function BlogCardWrapper({id}) {
+
+    const controls = useAnimation();
+    const {ref, inView} = useInView();
+
+    useEffect(() => {
+        if(inView) {
+            controls.start("visible");
+        }
+        // if(!inView) {
+        //     controls.start("hidden");
+        // }
+    }, [controls, inView])
+
     return (
-        <motion.div className="p-1 w-auto md:h-1/4 h-80 flex justify-center"initial="hidden" animate="visible" variants={{
+        <motion.div ref={ref} className="p-1 w-auto md:h-1/4 h-80 flex justify-center" initial="hidden" animate={controls} variants={{
             hidden: {
-                translateY: -100,
+                translateY: -200,
                 scale: .8,
                 opacity: 0
             },
@@ -14,7 +31,7 @@ function BlogCardWrapper({id}) {
                 scale:1,
                 opacity: 1,
                 transition: {
-                    delay: .4 + (id*.1)
+                    delay: .7 + (id*.1)
                 }
             }
 

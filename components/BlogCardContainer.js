@@ -2,6 +2,7 @@ import BlogCardWrapper from "./BlogCardWrapper"
 // in the future, this should dynamically create blogcards and put them on the page instead of just having a static amount
 // Make sure to get the "loading" animation (make a loading blogcard) when needed and the pop-up animation too
 import "@fontsource/bebas-neue";
+import React, { useEffect } from 'react';
 
 function BlogCardContainer() {
 

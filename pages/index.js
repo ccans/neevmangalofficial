@@ -126,7 +126,7 @@ export default function Home({aboutMe}) {
 
         
         <main>
-          <div className="fixed w-screen h-screen">
+          <div className="fixed w-screen h-screen overflow-hidden">
             <Particles params={particleParams}  />
           </div>
             <div className="overflow-hidden bg-design white flex pt-16 md:flex-row flex-col dark:bg-gray-800">
