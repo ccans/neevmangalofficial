@@ -26,7 +26,7 @@ function BlogCardWrapper({id}) {
     }, [controls, inView])
 
     return (
-        <motion.div ref={ref} className="p-1 w-auto md:h-1/4 h-80 flex justify-center" initial="hidden" animate={controls} variants={{
+        <motion.div ref={ref} className="p-1 w-auto md:h-40 h-80 flex justify-center" initial="hidden" animate={controls} variants={{
             hidden: {
                 translateY: -200,
                 scale: .8,
