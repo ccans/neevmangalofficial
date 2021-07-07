@@ -6,7 +6,7 @@ function BlogStripe() {
         <div className="pt-16 md:pl-20 pl-12"  >
             <motion.div className="text-white  mt-10" initial="hidden" animate="visible" variants={{
                 hidden: {
-                    translateY: -200,
+                    translateY: 200,
                     opacity: 0
                 },
                 visible: {
@@ -24,7 +24,7 @@ function BlogStripe() {
             </motion.div>
             <motion.div className="text-white mt-10" initial="hidden" animate="visible" variants={{
                 hidden: {
-                    translateY: -200,
+                    translateY: 200,
                     opacity: 0
                 },
                 visible: {

@@ -19,7 +19,7 @@ export default function Layout({ children, router }) {
             <Dropdown droppedDown={droppedDown} />
             <Coverpage coverPageDown={coverPageDown} setCover={setCover}/>
             <AnimatePresence exitBeforeEnter>
-                <motion.div key = {router.route} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ opacity: { duration: .5 }}}>
+                <motion.div key = {router.route} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ opacity: { duration: .5 }} }>
                     {children}
                 </motion.div>
             </AnimatePresence>

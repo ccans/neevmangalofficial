@@ -1,6 +1,6 @@
 import BlogCard from "./BlogCard"
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, useAnimation } from "framer-motion"
 import { useInView } from 'react-intersection-observer'
 
@@ -9,10 +9,16 @@ function BlogCardWrapper({id}) {
 
     const controls = useAnimation();
     const {ref, inView} = useInView();
+    const [onLoadCheck, toggle] = useState(false);
 
     useEffect(() => {
-        if(inView) {
-            controls.start("visible");
+        if(!onLoadCheck) {
+            if(inView) {
+                controls.start("visible");
+                toggle();
+            } 
+        } else if(inView) {
+            controls.start("visibleNodel");
         }
         // if(!inView) {
         //     controls.start("hidden");
@@ -33,6 +39,11 @@ function BlogCardWrapper({id}) {
                 transition: {
                     delay: .7 + (id*.1)
                 }
+            },
+            visibleNodel: {
+                translateY: 0,
+                scale:1,
+                opacity: 1
             }
 
         }}>
