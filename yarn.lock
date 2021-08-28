@@ -77,10 +77,25 @@
   resolved "https://registry.yarnpkg.com/@fontsource/bebas-neue/-/bebas-neue-4.4.5.tgz#9300421bc293e0eae4720bd532259b2277ffd2e7"
   integrity sha512-PQ8dZ6gpnG578iPJhK1hTy2DSYbHATiOrGA2F/uy+QMVBQLqY0J0tC/86DIaMSLsHySRetKXaQXwHJ4rNyfQNA==
 
+"@fontsource/inconsolata@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/inconsolata/-/inconsolata-4.5.0.tgz#52a4e55fd497e1c82aead1e2baeb85f3f3e3bc3d"
+  integrity sha512-oJowMSSurNbuaQjaHXi5vwcx//+aWuYupY/+sq5inOkMeXw6tqVa4WLaXNsnxMo7sBYoDOLZ9Wb9AZCCPFbE4g==
+
 "@fontsource/rajdhani@^4.4.5":
   version "4.4.5"
   resolved "https://registry.yarnpkg.com/@fontsource/rajdhani/-/rajdhani-4.4.5.tgz#c46a167a5b417ae47ba8553927d7d53d1210c082"
   integrity sha512-6D6OzBZJerqwRfaEJ8VPpjfilvGP8KTgU+mZlIE0OmgB9fuevr9Zx5TaNISIyIYKIDHDRZZFyOtqJAgDcmXc7g==
+
+"@fontsource/raleway@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/raleway/-/raleway-4.5.0.tgz#d5c464abe655d2e2cb134c503db455b7af6c03a6"
+  integrity sha512-Rzj90wbZQnNzazqzoiu5HzMEMdqMJLUVFOo699sinTXrZRm1aB5iX2HTiK2VlPnH4M6u8yYnJ7CebOyamfWlqw==
+
+"@fontsource/roboto@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-4.5.0.tgz#d6f925668ba6af46707f1040c43aff498ba204bb"
+  integrity sha512-ja4XYw/9kNRFM5Ndk9vwzHWsdBMXczyBazFkTXJQ74QQBnT0BbSsHn0pF60AU0Iznig1Wt9x3rADfG8LANvMpw==
 
 "@fullhuman/postcss-purgecss@^4.0.3":
   version "4.0.3"

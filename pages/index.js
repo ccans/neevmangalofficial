@@ -129,7 +129,7 @@ export default function Home({aboutMe}) {
           <div className="fixed w-screen h-auto">
             <Particles params={particleParams}  />
           </div>
-            <div className=" bg-design white flex pt-16 md:flex-row flex-col dark:bg-gray-800">
+            <div className=" bg-design bg-white min-h-screen white flex pt-16 md:flex-row flex-col dark:bg-gray-800">
               <MainStripe />
               <BlogCardContainer />
             </div>
