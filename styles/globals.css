@@ -115,6 +115,7 @@
 
 .timeline-text {
   margin-top: .5em;
+  cursor: pointer;
 }
 
  .blogBg {
