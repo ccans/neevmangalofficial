@@ -14,7 +14,7 @@ function BlogCardWrapper({id}) {
     useEffect(() => {
         if(!onLoadCheck) {
             if(inView) {
-                controls.start("visible");
+                controls.start("visibleNodel");
                 toggle();
             } 
         } else if(inView) {
@@ -43,7 +43,10 @@ function BlogCardWrapper({id}) {
             visibleNodel: {
                 translateY: 0,
                 scale:1,
-                opacity: 1
+                opacity: 1,
+                transition: {
+                    delay: 1
+                }
             }
 
         }}>
