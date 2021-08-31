@@ -32,10 +32,10 @@ export const getServerSideProps = async (ctx) => {
   if(props.name == "binary-problem") {
   return (
     <div style={{backgroundColor: "#000"}} className=" flex justify-center" >
-      <div className="w-1/6"> 
+      <div className="w-1/6 hidden md:block" > 
         <Timeline />
       </div>
-      <motion.div className="flex-grow pt-4 pb-4" style={{maxWidth: "66%", minHeight: "90vh", fontFamily: "roboto" }} initial="hidden" animate="visible" variants={{
+      <motion.div className="flex-grow pt-4 pb-4 w-2/3 px-4" style={{minHeight: "90vh", fontFamily: "roboto" }} initial="hidden" animate="visible" variants={{
             hidden: {
                 translateY: 200,
                 opacity: 0
@@ -52,7 +52,7 @@ export const getServerSideProps = async (ctx) => {
         }}> 
         <BlogDoc />
       </motion.div>
-      <div className="w-1/6 flex justify-center pt-20">
+      <div className="w-1/6 justify-center pt-20 hidden sm:flex">
         <motion.div className="fixed w-1/6 h-full flex justify-center" initial="hidden" animate="visible" variants={{
             hidden: {
                 translateX: 300,

@@ -8,7 +8,7 @@ function BlogDoc() {
     return (
         <div className="shadow-lg text-white" style={{backgroundColor: "#000", minHeight: "100%", borderRadius: "25px"}}>
             {/* <img style={{borderRadius: "25px"}} src="https://www.maxpixel.net/static/photo/1x/Eagle-Patriotic-Usa-America-Freedom-Symbol-Flag-5461544.jpg" /> */}
-            <div className="px-20 pt-12 text-box" style={{backgroundColor: "#000", fontFamily: "Inconsolata" }}>
+            <div className="sm:px-10 md:px-20 pt-12 text-box" style={{backgroundColor: "#000", fontFamily: "Inconsolata" }}>
             <h1 className="title" > The Binary Problem </h1>
 
 

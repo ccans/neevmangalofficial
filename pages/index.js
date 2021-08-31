@@ -126,7 +126,7 @@ export default function Home({aboutMe}) {
 
         
         <main>
-          <div className="fixed w-screen h-auto">
+          <div className="fixed w-full h-auto" >
             <Particles params={particleParams}  />
           </div>
             <div className=" bg-design bg-white min-h-screen white flex pt-16 md:flex-row flex-col dark:bg-gray-800">

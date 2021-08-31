@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 
 function MainStripe() {
     return (
-        <motion.div className="z-20 flex w-screen md:justify-end justify-center w-screen md:w-1/3 overflow-hidden" initial="hidden" animate="visible" variants={{
+        <motion.div className="z-20 flex w-full md:justify-end justify-center w-screen md:w-1/3 overflow-hidden"  style={{minHeight: "90vh"}} initial="hidden" animate="visible" variants={{
             hidden: {
                 translateX: -200,
                 opacity: 0
@@ -19,7 +19,7 @@ function MainStripe() {
             }
 
         }}>
-            <div className="w-3/4 w-full bg-black float-right p-4 dark:bg-white flex relative flex-col">
+            <div className="w-full bg-black float-right p-4 dark:bg-white flex relative flex-col">
                 <h1 className="dark:text-black text-white text-7xl tracking-wide" style={{fontFamily: "Bebas Neue"}}> Neev Mangal</h1>
                 <h3 className="dark:text-black text-white text-xl tracking-wider mb-2" style={{fontFamily: "Rajdhani"}}> Thinker ● Designer ● Creator </h3>
                 <hr style={{color: "white"}} />

@@ -15,7 +15,7 @@ export default function Layout({ children, router }) {
 
         return (
             <div className={theme ? "": ""} >
-                <Header droppedDown={droppedDown} toggleDropDown={toggleDropDown} setCover={setCover} switchTheme={switchTheme} theme={theme} floating={ (router.route == "/blog/[test]") } constraintsRef={constraintsRef} />
+                <Header droppedDown={droppedDown} toggleDropDown={toggleDropDown} setCover={setCover} switchTheme={switchTheme} theme={theme} floating={ (router.route == "/blog/[test]" || router.route == "/aboutme" ) } constraintsRef={constraintsRef} />
                 <div className="h-screen absolute bg-black"style={{
     top: "0px",
     left: "0px",
