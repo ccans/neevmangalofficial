@@ -14,7 +14,7 @@ function BlogCardWrapper({id}) {
     useEffect(() => {
         if(!onLoadCheck) {
             if(inView) {
-                controls.start("visibleNodel");
+                controls.start("visible");
                 toggle();
             } 
         } else if(inView) {
