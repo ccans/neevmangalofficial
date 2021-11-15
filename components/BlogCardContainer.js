@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 
 function BlogCardContainer() {
 
-    const elements = [<BlogCardWrapper id="1" />, <BlogCardWrapper id="2" />, <BlogCardWrapper id="3" />, <BlogCardWrapper id="4" />];
+    const elements = [<BlogCardWrapper id="1" />, <BlogCardWrapper id="2" />, <BlogCardWrapper id="3" />];
 
     return (
         <div className="block flex-grow pt-4 overflow-hidden h-auto" style={{boxShadow: "0 8px 6px -6px black"}}>

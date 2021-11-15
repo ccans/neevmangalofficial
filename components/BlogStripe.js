@@ -3,7 +3,7 @@ import "@fontsource/rajdhani";
 
 function BlogStripe() {
     return (
-        <div className="pt-16 md:pl-20 pl-12"  >
+        <div className="pt-16 md:pl-20 min-h-screen"  >
             <motion.div className="text-white  mt-10" initial="hidden" animate="visible" variants={{
                 hidden: {
                     translateY: 200,
@@ -19,8 +19,8 @@ function BlogStripe() {
                 }
 
             }}>
-                <h1 className="lg:text-8xl md:text-6xl text-4xl" style={{fontFamily: "Blog-Title-Font", maxWidth: "70%"}}> 
-                Welcome to my mind. </h1>
+                <h1 className="lg:text-8xl md:text-6xl md:pl-0 pl-12 text-4xl" style={{fontFamily: "Blog-Title-Font", maxWidth: "70%"}}> 
+                Magnum Opus </h1>
             </motion.div>
 
             <motion.div className="text-white mt-10" initial="hidden" animate="visible" variants={{
@@ -38,7 +38,16 @@ function BlogStripe() {
                 }
 
             }}>
-            <h4 className="lg:text-xl md:text-lg text-md mt-4 text-gray-300" style={{fontFamily: "monospace", maxWidth: "75%"}}> Ataraxia <em>(ancient greek)</em>: the lack of agitation that comes from understanding the ways of the universe, accepting fate, knowing what one can control and, therefore focusing only on the things one can actually change. </h4>
+            <h4 className="lg:text-xl md:float-left md:text-lg text-md mt-4 text-gray-300 m-auto md:text-left text-center" style={{fontFamily: "monospace", maxWidth: "75%"}}> Hi! My name is Neev Mangal and I’m a junior at Wayzata High School in Plymouth, Minnesota, where I have lived for seven years. I’ve had a wide array of interests throughout the years—solving Rubik’s Cubes, playing tennis, and capturing astrophotography—to name some. Throughout my high school life, however, the three passions that I’ve focused on are robotics, debate, and research. I captain both my school’s robotics and debate teams and compete in both. My research work spans from detecting exoplanets for the American Association of Variable Star Observers (AAVSO) to geospatial analysis of the planet to help identify ocean plastics under a professor at the University of Minnesota. In my spare time, I enjoy listening to music, writing blog pieces, and programming
+<br /> <br />
+Programming has been a large part of my life for a long time. Almost nine years after I learned my first programming language—javascript—I decided to bring together everything I’d learned  since then (everything from programming robotics discord bots to machine learning algorithms that identify ingredients in food) into one personal website.
+<br /> <br />
+When you funnel everything you’ve learned into one work, that work becomes more than just a project. It becomes a physical symbol of a burning passion—a <strong> magnum opus. </strong> <br /> <br /> Everything about me in one place to become the quintessential answer to a commonly posed question:
+<br /> <br />
+<em> “So, what are you up to these days?” </em>
+<br /> <br />
+<strong> Well, take a look at my website! </strong>
+ </h4>
 
             </motion.div>
 
@@ -58,10 +67,6 @@ function BlogStripe() {
                 }
 
             }}>
-                <h3  className="lg:text-3xl md:text-2xl text-xl" style={{fontFamily: "Rajdhani", maxWidth: "75%"}}> No, I'm not going to tell you how transitioning to 5 seconds of screen time a day changed my life or any superficial unnatainnable lifestyle nonsense that most blogs are for. I write exclusively about my thoughts on everything, and, to a lesser extent, my hobbies. 
- 
-</h3>
-
 
             </motion.div>
             

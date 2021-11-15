@@ -24,7 +24,7 @@ function MainStripe() {
                 <h3 className="dark:text-black text-white text-xl tracking-wider mb-2" style={{fontFamily: "Rajdhani"}}> Thinker ● Designer ● Creator </h3>
                 <hr style={{color: "white"}} />
                 <h3 className="dark:text-black text-white mt-4 font-medium" style={{fontFamily: "Rajdhani"}}> This website is the culmination of 6 years of front and back-end programming experience. I designed and built the whole thing myself, and it embodies who I am. Take a look around!<br /> <br /> </h3>
-                <h3 className="dark:text-black text-white font-light table-row absolute" style={{fontFamily: "Rajdhani", bottom: "0px"}}> Luftmensch <em> (yiddish) </em>: Refers to someone who is a bit of a dreamer, and literally means "air person" </h3>
+                <h3 className="dark:text-black text-white font-light table-row absolute" style={{fontFamily: "Rajdhani", bottom: "20px"}}> Luftmensch <em> (yiddish) </em>: Refers to someone who is a bit of a dreamer, and literally means "air person" </h3>
             </div>
         </motion.div>
     )
