@@ -23,7 +23,7 @@ function BlogStripe() {
                 Magnum Opus </h1>
             </motion.div>
 
-            <motion.div className="text-white mt-10" initial="hidden" animate="visible" variants={{
+            <motion.div className="text-white overflow-auto mt-10" initial="hidden" animate="visible" variants={{
                 hidden: {
                     translateY: 200,
                     opacity: 0
