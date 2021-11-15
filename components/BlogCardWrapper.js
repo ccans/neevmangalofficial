@@ -37,7 +37,7 @@ function BlogCardWrapper({id}) {
                 scale:1,
                 opacity: 1,
                 transition: {
-                    delay: (id * .1)
+                    delay: ((id * .1))
                 }
             },
             visibleNodel: {
