@@ -141,9 +141,6 @@ function personalbrand() {
       } else if(inView) {
           controls.start("visibleNodel");
       }
-      // if(!inView) {
-      //     controls.start("hidden");
-      // }
   }, [controls, inView])
 
   useEffect(() => {
@@ -205,12 +202,12 @@ function personalbrand() {
                   <div style={{lineHeight: "33vh"}} className={buttonMain ? "t-duration-500 h-0 opacity-0 delay-1000" : "t-duration-500 h-full opacity-100 delay-1000"}> 
                   <div onClick={() => toggleOne(!buttonOne)} className='group flex-grow border border-black cursor-pointer border-r-white relative'> 
                       <div  className={buttonOne ? "t-duration-500 group-hover:text-red-500 opacity-100 delay-500" : "t-duration-500  opacity-0"} style={{backgroundColor: "white"}}> DETERMINATION </div>
-                      <div className={buttonOne ? "t-duration-500 absolute opacity-0" : "t-duration-500  absolute opacity-100 delay-500"} style={{top: "0px", width: "100%"}}>Have patience and dedicate</div>
+                      <div className={buttonOne ? "t-duration-500 absolute opacity-0" : "t-duration-500  absolute opacity-100 delay-500"} style={{top: "0px", width: "100%"}}>Stay confident and persevere</div>
                   </div>
 
                   <div onClick={() => toggleTwo(!buttonTwo)} className='group flex-grow border border-black cursor-pointer border-r-white relative'> 
                       <div  className={buttonTwo ? "t-duration-500 group-hover:text-red-500 opacity-100 delay-500" : "t-duration-500  opacity-0"} style={{backgroundColor: "white"}}> HUMILITY </div>
-                      <div className={buttonTwo ? "t-duration-500 absolute opacity-0" : "t-duration-500  absolute opacity-100 delay-500"} style={{top: "0px", width: "100%"}}>Stay confident and persevere</div>
+                      <div className={buttonTwo ? "t-duration-500 absolute opacity-0" : "t-duration-500  absolute opacity-100 delay-500"} style={{top: "0px", width: "100%"}}>Have patience and dedicate</div>
                   </div>
 
                   <div onClick={() => toggleThree(!buttonThree)} className='group flex-grow border border-black cursor-pointer border-r-white relative'> 
