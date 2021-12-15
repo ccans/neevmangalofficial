@@ -5,7 +5,7 @@ import Wave from '../components/Wave';
 import BlogStripe from '../components/BlogStripe';
 import BlogBox from '../components/BlogBox';
 
-function blog() {
+function aboutme() {
 
 
     return (
@@ -28,4 +28,4 @@ function blog() {
     )
 }
 
-export default blog
+export default aboutme

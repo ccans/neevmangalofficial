@@ -14,7 +14,7 @@ function BlogCardContainer() {
     const [nothing, toggleNothing] = useState(false);
     const elements = [<BlogCardWrapper id="1" />, <BlogCardWrapper id="2" />, <BlogCardWrapper id="3" />];
 
-    const textElements = [<TextElement text="Blog" address="" toggleShowBlog={toggleShowBlog} />, <TextElement text="About Me" address="aboutme" toggleShowBlog={toggleNothing}/>, <TextElement text="Projects" address="projects" toggleShowBlog={toggleNothing}/>, <TextElement text="Uploads" address="projects" toggleShowBlog={toggleNothing}/>];
+    const textElements = [<TextElement text="Blog" address="" toggleShowBlog={toggleShowBlog} />, <TextElement text="About Me" address="aboutme" toggleShowBlog={toggleNothing}/>, <TextElement text="Projects" address="projects" toggleShowBlog={toggleNothing}/>, <TextElement text="Personal Brand" address="personalbrand" toggleShowBlog={toggleNothing}/>];
     const controls = useAnimation();
     const blogControls = useAnimation();
 
