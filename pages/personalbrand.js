@@ -199,24 +199,7 @@ function personalbrand() {
 
         }} >  Determined advocate; part time Angry Bird</motion.h1>
 
-                  <div style={{lineHeight: "33vh"}} className={buttonMain ? "t-duration-500 h-0 opacity-0 delay-1000" : "t-duration-500 h-full opacity-100 delay-1000"}> 
-                  <div onClick={() => toggleOne(!buttonOne)} className='group flex-grow border border-black cursor-pointer border-r-white relative'> 
-                      <div  className={buttonOne ? "t-duration-500 group-hover:text-red-500 opacity-100 delay-500" : "t-duration-500  opacity-0"} style={{backgroundColor: "white"}}> DETERMINATION </div>
-                      <div className={buttonOne ? "t-duration-500 absolute opacity-0" : "t-duration-500  absolute opacity-100 delay-500"} style={{top: "0px", width: "100%"}}>Stay confident and persevere</div>
-                  </div>
-
-                  <div onClick={() => toggleTwo(!buttonTwo)} className='group flex-grow border border-black cursor-pointer border-r-white relative'> 
-                      <div  className={buttonTwo ? "t-duration-500 group-hover:text-red-500 opacity-100 delay-500" : "t-duration-500  opacity-0"} style={{backgroundColor: "white"}}> HUMILITY </div>
-                      <div className={buttonTwo ? "t-duration-500 absolute opacity-0" : "t-duration-500  absolute opacity-100 delay-500"} style={{top: "0px", width: "100%"}}>Have patience and dedicate</div>
-                  </div>
-
-                  <div onClick={() => toggleThree(!buttonThree)} className='group flex-grow border border-black cursor-pointer border-r-white relative'> 
-                      <div  className={buttonThree ? "t-duration-500 group-hover:text-red-500 opacity-100 delay-500" : "t-duration-500  opacity-0"} style={{backgroundColor: "white"}}> SELF-AWARENESS  </div>
-                      <div className={buttonThree ? "t-duration-500 absolute opacity-0" : "t-duration-500  absolute opacity-100 delay-500"} style={{top: "0px", width: "100%"}}>Be reflective and consider</div>
-                  </div>
-                  </div>
-                  
-                  <div className={buttonMain ? "t-duration-500 tracking-wide text-center relative block delay-1000" : "t-duration-500 hidden delay-1000"} style={{fontFamily: "Rajdhani", fontSize: "40px", padding: "30px"}}> 
+                  <div className="t-duration-500 tracking-wide text-center relative block delay-1000" style={{fontFamily: "Rajdhani", fontSize: "40px", padding: "30px"}}> 
                     
                     I have a stutter—it destroyed my confidence for a long time. But I didn't want it to control my life. I took up debate as an extracurricular and pushed myself. I never imagined that I was capable of being who I am today. <br /> <strong> This taught me determination </strong> <br /> <br />  
                     The first year I was on the robotics team, the freshman were asked to clean up one time while older students worked on the robot. I was the only one that stayed—others considered it beneath them. Two years later, I was made a captain. <br /> <strong> This taught me humility </strong> <br /> <br />

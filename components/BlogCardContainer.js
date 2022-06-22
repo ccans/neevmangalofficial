@@ -31,23 +31,21 @@ function BlogCardContainer() {
                 blogControls.start("visibleFull");
             }, 1);
         } else {
-            blogControls.start("hiddenDisp");
+            blogControls.start("hidden");
             controls.start("visible");
         }
     }, [showBlog])
 
     return (
-        <div className="flex flex-col flex-grow h-auto transition-all md:overflow-hidden" style={{boxShadow: "0 8px 6px -6px black", transitionDuration: "1000ms"}}>
-            <motion.div style={{transitionDuration: "500ms"}} initial="visible"  
+        <div className="flex flex-row flex-grow h-auto transition-all md:overflow-hidden" style={{boxShadow: "0 8px 6px -6px black"}}>
+            <motion.div style={{transitionDuration: "500ms", width: "100%"}} initial="visible"  
             animate={controls} 
             variants={{
             hidden: {
-                height: "0px",
-                opacity: 0
+                marginLeft: "-100%"
             },
             visible: {
-                height: "100%",
-                opacity: 1,
+                marginLeft: "0px",
                 transition: {
                     delayChildren: 0.5
                   }
@@ -55,24 +53,15 @@ function BlogCardContainer() {
         }}>    
                 {textElements}   
             </motion.div>
-            <motion.div style={{transitionDuration: "500ms", position: "relative"}} initial="hidden"  animate={blogControls} variants={{
+            <motion.div style={{transitionDuration: "300ms", position: "relative", width: "100%"}} initial="hidden"  animate={blogControls} variants={{
             hidden: {
-                opacity: 0,
-                height: "0px",
-                display: "none"
-            },
-            hiddenDisp: {
-                opacity: 0,
-                height: "0px"
+                width: "0px"
             },
             visible: {
-                opacity: 1,
-                display: "block"
+                width: "0px"
             },
             visibleFull: {
-                opacity: 1,
-                height: "100%",
-                display: "block"
+                width: "100%"
             }
         }}>  
             <div className="w-full pl-10" style={{fontFamily: "Bebas Neue", fontSize: "75px"}}> BLOG </div> 

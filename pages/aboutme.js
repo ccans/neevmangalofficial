@@ -18,7 +18,6 @@ function aboutme() {
             <main className="blogBg">
                 <BlogStripe />
                 <Wave />
-                <BlogBox />
             </main>
 
             <footer className="fixed bottom-0 w-screen text-center text-gray-300 none md:block">

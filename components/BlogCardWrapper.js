@@ -20,9 +20,6 @@ function BlogCardWrapper({id}) {
         } else if(inView) {
             controls.start("visibleNodel");
         }
-        // if(!inView) {
-        //     controls.start("hidden");
-        // }
     }, [controls, inView])
 
     return (
