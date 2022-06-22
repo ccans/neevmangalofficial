@@ -13,7 +13,7 @@ function Header({droppedDown, toggleDropDown, setCover, switchTheme, theme, hidd
 
     return (
         <div className= {hiddenVar ? "hidden" : "block"}>
-            <header className = {floating ? "shadow-md flex h-16 justify-between items-center fixed w-full bg-black z-40" : "shadow-md flex h-16 justify-between items-center fixed w-full bg-white dark:bg-black z-40" }>
+            <header className = {floating ? "shadow-md flex h-16 justify-between items-center fixed w-full bg-black z-40" : "flex h-16 justify-between items-center fixed w-full bg-white dark:bg-black z-40" }>
                 <div className = {floating ? "ml-4 md:flex-grow justify-left max-w-md hidden md:flex text-white" : "ml-4 md:flex-grow justify-left max-w-md hidden md:flex text-gray-500 hover:text-black"}> 
                     <HeaderItem title="Explore" setCover={setCover} address="" />
                     <HeaderItem title="About Me" setCover={setCover} address="aboutme"/>

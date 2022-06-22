@@ -3,11 +3,16 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bakbak+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
 
 @layer base {
   body {
     @apply text-black;
   }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @font-face {
@@ -70,6 +75,15 @@
 
   
  }
+
+
+ #bubbles {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
 
  .transition-all {
   transition-duration: 300ms;

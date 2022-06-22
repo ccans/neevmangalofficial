@@ -1,8 +1,8 @@
-function SocialsBox() {
+function SocialsBox({date}) {
     return (
         <div className="h-2/3 w-full  text-white flex flex-col p-1 " style={{textAlign: "center",
             alignItems: "center", backgroundColor: "#000", borderRadius: "5px"}}>
-            <h3 className="text-blue-500"> July 4th, 2021 </h3>
+            <h3 className="text-blue-500"> {date} </h3>
             <svg className="socialsbox-icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
             width="30" height="30"
             viewBox="0 0 30 30"

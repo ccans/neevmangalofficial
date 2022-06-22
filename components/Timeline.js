@@ -1,12 +1,18 @@
-function Timeline() {
+function Timeline({title, units}) {
+
+    var elements=[];
+    for(var i=0;i<units.length;i++){
+            // push the component to elements!
+        elements.push(<a className="timeline-text" href={"#" + units[i]}> {units[i]} </a>);
+    }
+    
     return (
         <div className="text-white flex flex-col pt-20 pl-4 fixed">
-            <a className="bold"> The Binary Problem</a> 
+            <a className="bold"> {title} </a> 
             <div className="text-white flex flex-row">
                 <div className="white"> </div> 
                 <div className="text-white flex flex-col pl-4"> 
-                    <a className="timeline-text"> A tale as old as time </a>
-                    <a className="timeline-text"> A new view </a>
+                    {elements}
                 </div>
             </div>
         </div>

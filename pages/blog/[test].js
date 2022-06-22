@@ -1,4 +1,5 @@
 import BlogDoc from "../../components/BlogDoc"
+import BlogDocTwo from "../../components/BlogDocTwo"
 import SocialsBox from "../../components/SocialsBox"
 import Timeline from "../../components/Timeline"
 
@@ -66,13 +67,57 @@ export const getServerSideProps = async (ctx) => {
             }
 
         }}> 
-          <SocialsBox />
+          <SocialsBox date={"July 4th, 2021"} />
         </motion.div>
       </div>
     </div>
   )
 
-      } else {
+      } else if (props.name == "ai-camp") {
+        return (
+          <div style={{backgroundColor: "#000"}} className=" flex justify-center" >
+            <div className="w-1/6 hidden md:block" > 
+              <Timeline title="Artificial Intellgence" units={["AI Camp", "Our Project", "Presentation Day!", "Conclusions"]} />
+            </div>
+            <motion.div className="flex-grow pt-4 pb-4 w-2/3 px-4" style={{minHeight: "90vh", fontFamily: "roboto" }} initial="hidden" animate="visible" variants={{
+                  hidden: {
+                      translateY: 200,
+                      opacity: 0
+                  },
+                  visible: {
+                      translateY: [200, -50, 0],
+                      opacity: 1,
+                      transition: {
+                          delay: .1,
+                          duration: .5
+                      }
+                  }
+      
+              }}> 
+              <BlogDocTwo />
+            </motion.div>
+            <div className="w-1/6 justify-center pt-20 hidden sm:flex">
+              <motion.div className="fixed w-1/6 h-full flex justify-center" initial="hidden" animate="visible" variants={{
+                  hidden: {
+                      translateX: 300,
+                  },
+                  visible: {
+                      translateX: [300, -20, 0],
+                      transition: {
+                          delay: .6,
+                          duration: .5
+                      }
+                  }
+      
+              }}> 
+                <SocialsBox date={"June 18th, 2022"}/>
+              </motion.div>
+            </div>
+          </div>
+        )
+      
+      
+    } else {
         return (
           <div style={{opacity: "1"}}> 
             <div style={{color: "#000", background: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, Roboto, &quot;Segoe UI&quot;, &quot;Fira Sans&quot;, Avenir, &quot;Helvetica Neue&quot;, &quot;Lucida Grande&quot;, sans-serif", height: "100vh", textAlign: "center",display: "flex" , flexDirection:"column",alignItems: "center", justifyContent: "center"}}>
