@@ -53,7 +53,7 @@ function BlogCardContainer() {
         }}>    
                 {textElements}   
             </motion.div>
-            <motion.div style={{transitionDuration: "300ms", position: "relative", width: "100%"}} initial="hidden"  animate={blogControls} variants={{
+            <motion.div className="overflow-hidden" style={{transitionDuration: "300ms", position: "relative", width: "100%"}} initial="hidden"  animate={blogControls} variants={{
             hidden: {
                 width: "0px"
             },
