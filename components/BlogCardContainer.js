@@ -37,8 +37,8 @@ function BlogCardContainer() {
     }, [showBlog])
 
     return (
-        <div className="flex flex-row flex-grow h-auto transition-all md:overflow-hidden" style={{boxShadow: "0 8px 6px -6px black"}}>
-            <motion.div style={{transitionDuration: "500ms", width: "100%"}} initial="visible"  
+        <div className="hidden md:flex flex-row flex-grow h-auto transition-all md:overflow-hidden" style={{boxShadow: "0 8px 6px -6px black"}}>
+            <motion.div style={{transitionDuration: "500ms", width: "100%"}} className="h-full" initial="visible"  
             animate={controls} 
             variants={{
             hidden: {

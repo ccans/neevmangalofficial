@@ -3,8 +3,6 @@ import "@fontsource/bebas-neue";
 import "@fontsource/rajdhani";
 import Head from 'next/head'
 import Wave from '../components/Wave';
-import BlogStripe from '../components/BlogStripe';
-import BlogBox from '../components/BlogBox';
 import { motion, useAnimation } from "framer-motion"
 import { useInView } from 'react-intersection-observer'
 import Particles from 'react-particles-js';

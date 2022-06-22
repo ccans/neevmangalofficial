@@ -12,7 +12,7 @@ function TextElement({text, address, toggleShowBlog}) {
 
     return (
         <Link href={"/" + address}> 
-            <motion.h1 initial="hidden" animate="visible" transition={{duration: .5 }} variants={item} onClick={() => toggleShowBlog(true)} className="transition-all cursor-pointer h-1/4 tracking-wide text-center w-full dark:text-white hover:bg-black hover:text-white" style={{fontFamily: "Bebas Neue", fontSize: "15vh"}}> {text} </motion.h1> 
+            <motion.h1 initial="hidden" animate="visible" transition={{duration: .5 }} variants={item} onClick={() => toggleShowBlog(true)} className="transition-all cursor-pointer h-1/4 tracking-wide text-center w-full dark:text-white hover:bg-black hover:text-white text-6xl md:text-9xl" style={{fontFamily: "Bebas Neue", lineHeight: "inherit"}}> {text} </motion.h1> 
         </Link>
     )
 }
