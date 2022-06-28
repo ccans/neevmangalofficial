@@ -18,17 +18,18 @@ function MainStripe() {
         if(!state.active) { 
             setAlreadyActive(false); 
             console.log("ALREADYACTIVE RESET");
-            console.log(state.active + state.xy[0]);
             setSwipe(0);
         }
         else {
-            setSwipe(state.xy[0] - temp);
             if(!alreadyActive) {
                 setAlreadyActive(true);
                 console.log("TEMP RESET");
                 setTemp(state.xy[0]);
-            }
-
+                setSwipe(0);
+            } else {
+                setSwipe(state.xy[0] - temp);
+                console.log(swipe);
+            }   
         }
     }
 
@@ -38,7 +39,7 @@ function MainStripe() {
         <motion.div {...bind()} ref={mainStripe}
 
         className="z-20 flex md:justify-end justify-center w-screen md:w-1/3 overflow-hidden"  
-        style={{minHeight: "90vh", marginLeft: swipe, touchAction: 'none', pointerTouch: true, transitionDuration: "1ms"}} initial="hidden" animate="visible" variants={{
+        style={{minHeight: "90vh", marginLeft: swipe + "px", touchAction: 'none', pointerTouch: true, transitionDuration: "1ms"}} initial="hidden" animate="visible" variants={{
             hidden: {
                 translateX: -200,
                 opacity: 0
