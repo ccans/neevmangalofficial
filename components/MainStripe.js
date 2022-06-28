@@ -1,10 +1,44 @@
 import "@fontsource/bebas-neue";
 import "@fontsource/rajdhani";
 import { motion } from "framer-motion"
+import React from "react";
+import { useRef, useState } from "react";
+import { useDrag } from "@use-gesture/react";
 
 function MainStripe() {
+
+    const [temp, setTemp] = useState(0);
+    const [swipe, setSwipe] = useState(0);
+    const [alreadyActive, setAlreadyActive] = useState(false);
+    const mainStripe = useRef(null);
+
+
+    function checkScroll(state) {
+        
+        if(!state.active) { 
+            setAlreadyActive(false); 
+            console.log("ALREADYACTIVE RESET");
+            console.log(state.active + state.xy[0]);
+            setSwipe(0);
+        }
+        else {
+            setSwipe(state.xy[0] - temp);
+            if(!alreadyActive) {
+                setAlreadyActive(true);
+                console.log("TEMP RESET");
+                setTemp(state.xy[0]);
+            }
+
+        }
+    }
+
+    const bind = useDrag(state => checkScroll(state), { movement: "mx", direction: "xDir"});
+
     return (
-        <motion.div className="z-20 flex md:justify-end justify-center w-screen md:w-1/3 overflow-hidden"  style={{minHeight: "90vh"}} initial="hidden" animate="visible" variants={{
+        <motion.div {...bind()} ref={mainStripe}
+
+        className="z-20 flex md:justify-end justify-center w-screen md:w-1/3 overflow-hidden"  
+        style={{minHeight: "90vh", marginLeft: swipe, touchAction: 'none', pointerTouch: true}} initial="hidden" animate="visible" variants={{
             hidden: {
                 translateX: -200,
                 opacity: 0
@@ -24,7 +58,7 @@ function MainStripe() {
                 <h3 className="text-white text-xl tracking-wider mb-2" style={{fontFamily: "Rajdhani"}}> Professional Angry Bird </h3>
                 <hr style={{color: "white"}} />
                 <h3 className="text-white mt-4 font-medium" style={{fontFamily: "Rajdhani"}}> This website is the culmination of 6 years of front and back-end programming experience. I designed and built the whole thing myself, and it embodies who I am. Take a look around! </h3>
-                <img className="block md:hidden" style={{width: "150px", margin: "auto"}}src="https://img.icons8.com/ios-glyphs/480/FFFFFF/swipe-left.png"/>
+                <img className="block md:hidden" style={{width: "150px", margin: "auto"}} src="https://img.icons8.com/ios-glyphs/480/FFFFFF/swipe-left.png"/>
                 <div className="block" style={{height:"48px"}}> </div>
                 <h3 className="text-white font-light table-row absolute" style={{fontFamily: "Rajdhani", bottom: "20px"}}> Luftmensch <em> (yiddish) </em>: Refers to someone who is a bit of a dreamer, and literally means "air person" </h3>
             </div>
