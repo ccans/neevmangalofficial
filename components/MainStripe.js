@@ -54,7 +54,7 @@ function MainStripe() {
         <motion.div {...bind()} ref={mainStripe}
 
         className="z-20 flex md:justify-end justify-center w-screen md:w-1/3 overflow-hidden"  
-        style={{minHeight: "90vh", marginLeft: swipe + "px", touchAction: 'none', pointerTouch: true}} initial="hidden" animate="visible" variants={{
+        style={{minHeight: "100vh", marginLeft: swipe + "px", touchAction: 'none', pointerTouch: true}} initial="hidden" animate="visible" variants={{
             hidden: {
                 translateX: -200,
                 opacity: 0
