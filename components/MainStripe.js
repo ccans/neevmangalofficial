@@ -4,32 +4,47 @@ import { motion } from "framer-motion"
 import React from "react";
 import { useRef, useState } from "react";
 import { useDrag } from "@use-gesture/react";
+import { useSpring, animated } from 'react-spring'
 
 function MainStripe() {
 
     const [temp, setTemp] = useState(0);
     const [swipe, setSwipe] = useState(0);
+    const [open, setOpen] = useState(0);
     const [alreadyActive, setAlreadyActive] = useState(false);
     const mainStripe = useRef(null);
 
-
     function checkScroll(state) {
-        
-        if(!state.active) { 
-            setAlreadyActive(false); 
-            console.log("ALREADYACTIVE RESET");
-            setSwipe(0);
-        }
-        else {
-            if(!alreadyActive) {
-                setAlreadyActive(true);
-                console.log("TEMP RESET");
-                setTemp(state.xy[0]);
-                setSwipe(0);
-            } else {
-                setSwipe(state.xy[0] - temp);
-                console.log(swipe);
-            }   
+        if(swipe <= 0) {
+            mainStripe.current.style.transitionDuration = "1ms";
+            if(!state.active) { 
+                setAlreadyActive(false); 
+                mainStripe.current.style.transitionDuration = "500ms";
+                if(swipe < -1 * mainStripe.current.clientWidth/2) {
+                    console.log("IS OPEN");
+                    setSwipe(-1 * mainStripe.current.clientWidth + 40);
+                    setOpen(-1 * mainStripe.current.clientWidth + 40);
+                } else {
+                    console.log("IS NOT OPEN");
+                    setSwipe(0);
+                    setOpen(0);
+                }
+            }
+            else {
+                if(!alreadyActive) {
+                    setAlreadyActive(true);
+                    setTemp(state.xy[0] - open);
+                } else {
+                    if(state.xy[0] - temp < 0) {
+                        setSwipe(state.xy[0] - temp);
+                        console.log(swipe);
+                    }
+                }   
+            }
+        } else {
+            
+            // setSwipe(0);
+           
         }
     }
 
@@ -39,7 +54,7 @@ function MainStripe() {
         <motion.div {...bind()} ref={mainStripe}
 
         className="z-20 flex md:justify-end justify-center w-screen md:w-1/3 overflow-hidden"  
-        style={{minHeight: "90vh", marginLeft: swipe + "px", touchAction: 'none', pointerTouch: true, transitionDuration: "1ms"}} initial="hidden" animate="visible" variants={{
+        style={{minHeight: "90vh", marginLeft: swipe + "px", touchAction: 'none', pointerTouch: true}} initial="hidden" animate="visible" variants={{
             hidden: {
                 translateX: -200,
                 opacity: 0
