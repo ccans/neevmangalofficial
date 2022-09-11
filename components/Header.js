@@ -17,7 +17,7 @@ function Header({droppedDown, toggleDropDown, hiddenVar, floating}) {
                 <div className = {floating ? "ml-4 md:flex-grow justify-left max-w-md hidden md:flex text-white" : "ml-4 md:flex-grow justify-left max-w-md hidden md:flex text-gray-500 hover:text-black"}> 
                     <HeaderItem title="Explore" address="" />
                     <HeaderItem title="About Me" address="aboutme"/>
-                    <HeaderItem title="Accomplishments" address="projects"/>
+                    <HeaderItem title="Projects" address="projects"/>
                 </div>
                 <div  >
                     <Icon droppedDown={droppedDown} toggleDropDown={toggleDropDown} type={floating ? false : true}/>

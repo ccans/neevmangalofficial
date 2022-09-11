@@ -36,15 +36,22 @@ The final day of camp consisted of each cohort presenting their machine learning
 The most exciting conclusion we reached was that the premise of our AI - ingredient detection - could be expanded far beyond the project we completed in two weeks. AIs could be trained to discern the ingredients from other cuisines, and the same technology could be used to detect food allergens or recreate dishes from social media posts. One of our cohort members had recently visited Eastern Asia, and he discussed the immense demand tourists might have for a tool that tells them exactly what they’re eating. The project itself could also be broadened in scope—multiple AIs could be trained to identify ingredients from dishes in various cuisines and another AI could be trained to figure out what cuisine a dish is from. This would allow for a photo of a dish to be sorted into a type of cuisine and subsequently have its ingredients identified by an AI created specifically to identify ingredients in dishes from that cuisine.
 <br /> <br />
 
-<a className="subtitle bold" id="Conclusions"> Conclusions </a> <br />
+<a className="subtitle bold" id="Conclusions"> The End of Camp </a> <br />
 
 Looking back on the project as a whole, I was really surprised by how much I had grown. Creating this model was an important building block that has allowed me to begin tackling real-world issues by applying Artificial Intelligence. Thanks to this program, AI was no longer an inaccessible subject—I had tamed it into a tool in my toolbox.  
 <br /> <br />
 Check out our final project video and some additional photos <a style={{color: "lightblue"}} href="https://www.youtube.com/watch?v=K67E81Ui8CE"> here! </a> 
 <br /> <br />
-Check out my current AI research here that I was able to build up thanks to this experience. [LINK TO ENVIRONMENTAL TECHNOLOGY SPARK]
+Check out my current AI research here that I was able to build up thanks to this experience.
 <br /> <br />
 
+<a className="subtitle bold" id="Conclusions"> Research! </a> <br />
+
+AI Camp gave me the skills I needed to do research involving Artificial Intellgence in my junior year. Under the mentorship of Professor Ardeshir Ebtehaj at the University of Minnesota, I worked as an independent researcher determining whether an Artificial Intellgence program could be used to identify ocean plastic in multispectral satellite imagery.
+<br /> <br />
+It sounds complciated, I know! But what I was essentially doing can be explained quite simply. I was training an AI to look at satellite imagery of the ocean (think about Google Earth) and identify which pixels contained plastic. In my research journey, I talked to researchers from all across the world—everyhwere from Ireland and Greece to India and right here at home in the United States. I spoke with professors, NASA employees, and engineers. 
+<br /> <br />
+My model had great success, with over 95% accuracy and precision. I have submitted my paper for publication in the Journal of Student Reserach, and you can read it <a style={{textDecoration: "underline"}} href="https://docs.google.com/document/d/10mRnFK6X5cqoXdM2ehm-Vw3SpY9tt4Qasp6noLYw_wI/edit"> here! </a>
             </div>
 
         </div>

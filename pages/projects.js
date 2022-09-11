@@ -19,13 +19,13 @@ export default function Home({aboutMe}) {
             {/* <Particles params={particleParams}  /> */}
           </div>
             <div className="flex flex-row justify-center px-30 bg-white" style={{paddingTop: "68px"}}> 
-                <ProjectCard backgroundCol="#00498D" title="Astronomy" />
+                {/* <ProjectCard backgroundCol="#00498D" title="Astronomy" /> */}
                 <ProjectCard address="blog/ai-camp" backgroundCol="#Ab2330" title="Artificial Intelligence" img="https://img.icons8.com/external-itim2101-fill-itim2101/128/undefined/external-ai-computer-and-laptop-itim2101-fill-itim2101.png" />
             </div>
-            <div className="flex flex-row justify-center px-30 bg-white"> 
+            {/* <div className="flex flex-row justify-center px-30 bg-white"> 
                 <ProjectCard backgroundCol="" title="Programming" />
                 <ProjectCard backgroundCol="#0c2d1c" title="Volunteering" />
-            </div>
+            </div> */}
 
         </main>
       </div>

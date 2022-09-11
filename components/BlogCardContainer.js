@@ -13,8 +13,8 @@ function BlogCardContainer() {
     const [showBlog, toggleShowBlog] = useState(false);
     const [nothing, toggleNothing] = useState(false);
     const elements = [<BlogCardWrapper key="1" />, <BlogCardWrapper key="2" />, <BlogCardWrapper key="3" />];
-
-    const textElements = [<TextElement text="Blog" address="" toggleShowBlog={toggleShowBlog} key="1"/>, <TextElement text="About Me" address="aboutme" key="2" toggleShowBlog={toggleNothing}/>, <TextElement key="3" text="Projects" address="projects" toggleShowBlog={toggleNothing}/>, <TextElement key="4" text="Personal Brand" address="personalbrand" toggleShowBlog={toggleNothing}/>];
+// <TextElement text="Blog" address="" toggleShowBlog={toggleShowBlog} key="1"/>, 
+    const textElements = [<TextElement text="About Me" address="aboutme" key="2" toggleShowBlog={toggleNothing}/>, <TextElement key="3" text="Projects" address="projects" toggleShowBlog={toggleNothing}/>, <TextElement key="4" text="Astrophotography" address="astrophotography" toggleShowBlog={toggleNothing}/>];
     const controls = useAnimation();
     const blogControls = useAnimation();
 
@@ -37,7 +37,7 @@ function BlogCardContainer() {
     }, [showBlog])
 
     return (
-        <div className="w-full md:w-auto h-full absolute md:relative md:flex flex-row flex-grow md:h-auto transition-all md:overflow-hidden" style={{boxShadow: "0 8px 6px -6px black"}}>
+        <div className="bgSpecial w-full md:w-auto h-full absolute md:relative md:flex flex-row flex-grow md:h-auto transition-all md:overflow-hidden" style={{boxShadow: "0 8px 6px -6px black"}}>
             <motion.div style={{transitionDuration: "500ms", width: "100%"}} className="h-full" initial="visible"  
             animate={controls} 
             variants={{

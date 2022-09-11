@@ -77,7 +77,7 @@ export const getServerSideProps = async (ctx) => {
         return (
           <div style={{backgroundColor: "#000"}} className=" flex justify-center" >
             <div className="w-1/6 hidden md:block" > 
-              <Timeline title="Artificial Intellgence" units={["AI Camp", "Our Project", "Presentation Day!", "Conclusions"]} />
+              <Timeline title="Artificial Intellgence" units={["AI Camp", "Our Project", "Presentation Day!", "Conclusions", "Research"]} />
             </div>
             <motion.div className="flex-grow pt-4 pb-4 w-2/3 px-4" style={{minHeight: "90vh", fontFamily: "roboto" }} initial="hidden" animate="visible" variants={{
                   hidden: {
