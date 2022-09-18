@@ -38,7 +38,7 @@ function astrophotography() {
                 <img src="/MarsC.jpg" className='astrophot-phot-phot' />
                 </div>
                 <div className='astrophot-subtxt'> The Orion Nebula </div>
-                <div id='astrophot' className='astrophot-phot'>
+                <div className='astrophot-phot'>
                 <img src="/nebulao.jpg" className='astrophot-phot-phot' />
                 <img src="/nebulai.jpg" className='astrophot-phot-phot' />
                 <img src="/nebulac.jpg" className='astrophot-phot-phot' />

@@ -28,9 +28,24 @@ html {
   font-weight: 100;
 }
 
+
+
 @media only screen and (max-width: 600px) {
-  #astrophot {
+  .astrophot-phot {
     flex-direction: column !important;
+  }
+
+  .astrophot-txt {
+    font-size: 25px !important;
+  }
+
+  .astrophot-bg {
+    padding: 40px  !important;
+  }
+
+  .astrophot-phot-phot {
+    height: 25% !important;
+    width: auto !important
   }
 }
 
@@ -197,6 +212,7 @@ html {
   max-width: 100vw;
     min-height: 100vh;
     padding: 100px;
+    overflow: hidden;
 }
 
 
