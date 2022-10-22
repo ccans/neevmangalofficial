@@ -37,6 +37,10 @@ html {
 }
 
 @media only screen and (max-width: 600px) {
+
+  .socialsPC {
+    display: none !important;
+  }
   .astrophot-phot {
     flex-direction: column !important;
   }
@@ -314,17 +318,29 @@ html {
   margin-top: auto;
 }
 
+.socialsPC {
+  position: absolute;
+  right: 0px;
+  align-self: flex-end;
+  height: 70px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  margin-top: auto;
+  right: 30px;
+  bottom: 0px;
+}
 
 .icon {
   height: 30px;
-  margin-right:15px;
+  margin-left:15px;
   cursor: pointer;
 }
 
 .iconTwo {
   margin-top: 1px;
   height: 28px;
-  margin-right: 15px;
+  margin-left: 15px;
   cursor: pointer;
 }
 
