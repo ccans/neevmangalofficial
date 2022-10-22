@@ -11,8 +11,8 @@ export default function Layout({ children, router }) {
     const [droppedDown, toggleDropDown] = useState(false);
 
         return (
-            <div>
-                <Header droppedDown={droppedDown} toggleDropDown={toggleDropDown} hiddenVar = {router.route == "/" || router.route == "/index" || router.route == "/personalbrand"} floating={ (router.route == "/blog/[test]" || router.route == "/aboutme" ) }  />
+            <div style={{backgroundColor: "navajowhite"}}>
+                <Header droppedDown={droppedDown} toggleDropDown={toggleDropDown} hiddenVar = {router.route == "/" || router.route == "/index" || router.route == "/personalbrand" } floating={ (router.route == "/blog/[test]") }  />
                 {/* <div className="h-screen absolute bg-black top-0 left-0 overflow-hidden -z-[1] w-full"></div> */}
                 <Dropdown droppedDown={droppedDown} />
                 <AnimatePresence exitBeforeEnter>
