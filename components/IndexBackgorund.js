@@ -9,14 +9,15 @@ function IndexBackgorund() {
     id="text-base"
     style={{
       backgroundColor: "#fff",
+      display: "flex"
     }}
-    width={1920}
-    height={1080}
+    width="100vw"
+    height="100vh"
     className="svg-base"
   >
     <rect
-      width="100%"
-      height="100%"
+      width="100vw"
+      height="100vh"
       id="textBg"
       style={{
         fill: "#e1dead",
@@ -65,7 +66,7 @@ function IndexBackgorund() {
       >
         <a strokeWidth={4}>
           {
-            "Neev    Mangal    Neev    Mangal    Neev   Mangal   Neev    Mangal Neev    Mangal"
+            "Neev    Mangal    Neev    Mangal    Neev   Mangal   Neev    Mangal Neev    Mangal Neev    Mangal Neev    Mangal Neev    Mangal"
           }
         </a>
       </motion.text>
@@ -101,7 +102,7 @@ function IndexBackgorund() {
       >
         <Link href="/aboutme">
           {
-            "About Me  \u2728   About Me   \u2728  About Me   \u2728  About Me  \u2728  About Me  \u2728  About Me  \u2728  About Me  \u2728   About Me"
+            "About Me  \u2728   About Me   \u2728  About Me   \u2728  About Me  \u2728  About Me  \u2728  About Me  \u2728  About Me  \u2728   About Me  \u2728   About Me  \u2728   About Me  \u2728   About Me  \u2728   About Me"
           }
         </Link>
       </motion.text>
@@ -136,7 +137,7 @@ function IndexBackgorund() {
       >
         <Link href="/projects">
           {
-            "Projects  \uD83D\uDCC1  Projects  \uD83D\uDCC1  Projects  \uD83D\uDCC1  Projects  \uD83D\uDCC1  Projects \uD83D\uDCC1  Projects \uD83D\uDCC1  Projects  \uD83D\uDCC1  Projects"
+            "Projects  \uD83D\uDCC1  Projects  \uD83D\uDCC1  Projects  \uD83D\uDCC1  Projects  \uD83D\uDCC1  Projects \uD83D\uDCC1  Projects \uD83D\uDCC1  Projects  \uD83D\uDCC1  Projects  \uD83D\uDCC1  Projects  \uD83D\uDCC1  Projects  \uD83D\uDCC1  Projects  \uD83D\uDCC1  Projects"
           }
         </Link>
       </motion.text>
@@ -207,7 +208,7 @@ function IndexBackgorund() {
         <Link href="/writing">
           
           {
-            "Writing  \u270D\uFE0F Writing  \uD83D\uDCD3 Writing  \u270D\uFE0F  Writing  \uD83D\uDCD3  Writing  \u270D\uFE0F  Writing  \uD83D\uDCD3  Writing \u270D\uFE0F Writing"
+            "Writing  \u270D\uFE0F Writing  \uD83D\uDCD3 Writing  \u270D\uFE0F  Writing  \uD83D\uDCD3  Writing  \u270D\uFE0F  Writing  \uD83D\uDCD3  Writing \u270D\uFE0F Writing \u270D\uFE0F Writing \u270D\uFE0F Writing \u270D\uFE0F Writing"
           }
         </Link>
       </motion.text>
@@ -240,7 +241,7 @@ function IndexBackgorund() {
         }}
       >
         <a strokeWidth={4}>
-          {"Neev    Mangal    Neev    Mangal    Neev   Mangal   Neev    Mangal"}
+          {"Neev    Mangal    Neev    Mangal    Neev   Mangal   Neev    Mangal   Neev    Mangal   Neev    Mangal"}
         </a>
       </motion.text>
     </g>

@@ -33,7 +33,20 @@ html {
 
 .svg-base {
   font-size: 52px;
-  margin-left: calc((100% - 1600px)/2);
+  /* margin-left: calc(
+    (100% - 1600px)/2); */
+}
+
+@media only screen and (max-width: 1200px) {
+  .svg-base { 
+    margin-left: calc((100% - 1600px)/2);
+    height: 1080px; 
+    width: 1920px}
+
+    .svg-base rect {
+      width: 1920px;
+      height: 1080px;
+    }
 }
 
 @media only screen and (max-width: 600px) {
@@ -59,7 +72,7 @@ html {
   }
 
   .svg-base {
-    display: none;
+    display: none !important;
   }
 
   .mobile-index {
