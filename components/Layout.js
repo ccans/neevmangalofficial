@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function Layout({ children, router }) {
 
-    const [droppedDown, toggleDropDown] = useState(false);
+    const [droppedDown, toggleDropDown] = useState(true);
 
         return (
             <div style={{backgroundColor: "navajowhite"}}>
