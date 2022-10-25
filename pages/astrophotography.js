@@ -13,7 +13,7 @@ function astrophotography() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className="blogBg astrophot-bg">
+            <main className="blogBg astrophot-bg" style={{backgroundColor: "black"}}>
                 <div className='astrophot-txt'> Astrophotography—A Sample </div>
                 <div className='astrophot-subtxt'> Jupiter </div>
                 <div className='astrophot-phot'>

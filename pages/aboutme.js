@@ -14,7 +14,7 @@ function aboutme() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className="blogBg">
+            <main className="blogBg" >
                 <BlogStripe />
                 <Wave />
             </main>
