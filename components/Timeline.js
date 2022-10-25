@@ -7,11 +7,11 @@ function Timeline({title, units}) {
     }
     
     return (
-        <div className="text-white flex flex-col pt-20 pl-4 fixed">
+        <div className="text-black flex flex-col pt-20 pl-4 fixed">
             <a className="bold"> {title} </a> 
             <div className="text-white flex flex-row">
                 <div className="white"> </div> 
-                <div className="text-white flex flex-col pl-4"> 
+                <div className="text-black flex flex-col pl-4"> 
                     {elements}
                 </div>
             </div>

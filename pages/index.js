@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Particles from 'react-particles-js';
 import MainStripe from "../components/MainStripe";
-import BlogCardContainer from '../components/BlogCardContainer';
 import Head from 'next/head'
 import { motion, AnimatePresence } from "framer-motion"
 import IndexBackgorund from '../components/IndexBackgorund';

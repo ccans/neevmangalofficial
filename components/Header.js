@@ -18,7 +18,7 @@ function Header({droppedDown, toggleDropDown, hiddenVar, floating}) {
                     <HeaderItem title="Explore" address="" />
                     <HeaderItem title="About Me" address="aboutme"/>
                     <HeaderItem title="Projects" address="projects"/>
-                    <HeaderItem title="Writing" address="projects"/>
+                    <HeaderItem title="Writing" address="writing"/>
 
                 </div>
                 <div  >
