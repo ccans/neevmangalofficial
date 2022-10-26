@@ -71,6 +71,10 @@ html {
     width: auto !important
   }
 
+  .flex-col-mobile {
+    flex-direction: column;
+  }
+
   .svg-base {
     display: none !important;
   }
@@ -95,6 +99,10 @@ html {
 
 #tsparticles {
   height: 100%;
+}
+
+.flex-col-mobile {
+  display: flex;
 }
 
 .rotate {
@@ -290,9 +298,13 @@ html {
   font-weight: bold;
 }
 
+.heightBar {
+  height: calc(100% - 64px);
+}
+
 .socialsbox-icon {
   margin-top: 20px;
-  fill: #FFFFFF;
+  fill: #000000;
 }
 
 .timeline-text {

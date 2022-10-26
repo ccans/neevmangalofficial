@@ -38,9 +38,9 @@ function BlogStripe() {
                 }
 
             }}>
-            <h4 className="lg:text-xl md:float-left md:text-lg text-md mt-4 text-gray-300 m-auto md:text-left text-center text-black" style={{fontFamily: "monospace", maxWidth: "75%"}}> Hi! My name is Neev Mangal and I’m a junior at Wayzata High School in Plymouth, Minnesota, where I have lived for seven years. I’ve had a wide array of interests throughout the years—solving Rubik’s Cubes, playing tennis, and capturing astrophotography—to name some. Throughout my high school life, however, the three passions that I’ve focused on are robotics, debate, and research. I captain both my school’s robotics and debate teams and compete in both. My research work spans from detecting exoplanets for the American Association of Variable Star Observers (AAVSO) to geospatial analysis of the planet to help identify ocean plastics under a professor at the University of Minnesota. In my spare time, I enjoy listening to music, writing blog pieces, and programming
+            <h4 className="lg:text-xl md:float-left md:text-lg text-md mt-4 text-gray-300 m-auto md:text-left text-center text-black" style={{fontFamily: "monospace", maxWidth: "75%"}}> Hi! My name is Neev Mangal and I’m a senior at Wayzata High School in Plymouth, Minnesota, where I have lived for seven years. I’ve had a wide array of interests throughout the years—solving Rubik’s Cubes, playing tennis, and capturing astrophotography—to name some. Throughout my high school life, however, I have discovered a love for robotics, debate, and research. I captain both my school’s robotics and debate teams and enjoy both activities thoroughly (luckily, one has a Fall season while the other occurs during the Winter/Spring). My research work spans from detecting exoplanets for the American Association of Variable Star Observers (AAVSO) to geospatial analysis of the planet to help identify ocean plastics under a professor at the University of Minnesota.
 <br /> <br />
-Programming has been a large part of my life for a long time. Almost nine years after I learned my first programming language—javascript—I decided to bring together everything I’d learned  since then (everything from programming robotics discord bots to machine learning algorithms that identify ingredients in food) into one personal website.
+In my spare time, I enjoy listening to music, writing (political and apolitical) blog pieces, and programming. Programming has been a large part of my life for a long time, so I decided to bring everything I’d learned together into a personal website.
 <br /> <br />
 When you funnel everything you’ve learned into one work, that work becomes more than just a project. It becomes a physical symbol of a burning passion—a <strong> magnum opus. </strong> <br /> <br /> Everything about me in one place to become the quintessential answer to a commonly posed question:
 <br /> <br />
@@ -48,6 +48,7 @@ When you funnel everything you’ve learned into one work, that work becomes mor
 <br /> <br />
 <strong> Well, take a look at my website! </strong>
  </h4>
+
 
             </motion.div>
 
