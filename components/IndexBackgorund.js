@@ -72,7 +72,7 @@ function IndexBackgorund() {
       </motion.text>
       <motion.text
         style={{
-          animation: "diagonalOne 5s linear infinite",
+          animation: "diagonalOne 10s linear infinite",
         }}
         x={320}
         y={540}
@@ -108,7 +108,7 @@ function IndexBackgorund() {
       </motion.text>
       <motion.text
         style={{
-          animation: "diagonalTwo 7s linear infinite",
+          animation: "diagonalTwo 14s linear infinite",
         }}
         x={520}
         y={540}
@@ -143,7 +143,7 @@ function IndexBackgorund() {
       </motion.text>
       <motion.text
         style={{
-          animation: "diagonalThree 6s linear infinite",
+          animation: "diagonalThree 12s linear infinite",
         }}
         x={720}
         y={540}
@@ -178,7 +178,7 @@ function IndexBackgorund() {
       </motion.text>
       <motion.text
         style={{
-          animation: "diagonalFour 8s linear infinite",
+          animation: "diagonalFour 16s linear infinite",
         }}
         x={920}
         y={540}
