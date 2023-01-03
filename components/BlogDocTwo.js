@@ -14,7 +14,7 @@ function BlogDocTwo({title, textArr, boldArr, imageLink}) {
     }
 
     return (
-        <div className="text-black" style={{minHeight: "100%", borderLeft: "1px solid black", borderRight: "1px solid black"}}>
+        <div className="text-black border-blog" style={{minHeight: "100%"}}>
             <img style={{borderRadius: "25px", margin: "auto", width: "70%"}} src={imageLink} />
             <div className="sm:px-10 md:px-20 pt-12 text-box" style={{fontFamily: "Inconsolata" }}>
             <h1 className="title" > {title} </h1>
