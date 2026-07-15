@@ -107,23 +107,56 @@ function slug(label) {
   return label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 }
 
-const CX = 530;
-const CY = 530;
+const CX = 570;
+const CY = 570;
 const BACKBONE_R = 430;
 const OUTER_R = 396;
 const INNER_R = 362;
 const TICK_R = 452;
 const PILL_LEADER_R = 434;
 const PILL_R = 470;
+const PRIMER_NEAR_R = BACKBONE_R + 10;
+const PRIMER_FAR_R = BACKBONE_R + 100;
+
+// A radial "primer" line that stays hidden (drawn but zero-length via
+// stroke-dashoffset) until its parent .plasmid-feature is hovered, then
+// draws itself inward from outside the backbone to the feature's edge.
+function Primer({ angle, accent }) {
+  const near = polar(CX, CY, PRIMER_NEAR_R, angle);
+  const far = polar(CX, CY, PRIMER_FAR_R, angle);
+  const len = PRIMER_FAR_R - PRIMER_NEAR_R;
+
+  return (
+    <line
+      className="plasmid-primer"
+      x1={far.x}
+      y1={far.y}
+      x2={near.x}
+      y2={near.y}
+      stroke={accent}
+      strokeWidth={2.5}
+      strokeLinecap="round"
+      strokeDasharray={len}
+      strokeDashoffset={len}
+    />
+  );
+}
 
 function Feature({ feature, total, clickable }) {
   const rMid = (INNER_R + OUTER_R) / 2;
   const d = arrowPath(CX, CY, INNER_R, OUTER_R, feature.start, feature.end, total);
   const pathId = `arc-${slug(feature.label)}`;
   const textD = arcTextPath(CX, CY, rMid, feature.start, feature.end, total);
+  const startAngle = coordAngle(feature.start, total);
+  const endAngle = coordAngle(feature.end, total);
 
   const content = (
-    <g style={clickable ? { cursor: 'pointer' } : undefined} className={clickable ? 'plasmid-feature' : undefined}>
+    <g
+      style={clickable ? { cursor: 'pointer', color: feature.color } : { color: feature.color }}
+      className={clickable ? 'plasmid-feature' : undefined}
+    >
+      {clickable && <Primer angle={startAngle} accent={feature.color} />}
+      {clickable && <Primer angle={endAngle} accent={feature.color} />}
       <path
         d={d}
         fill={feature.color}
@@ -269,15 +302,32 @@ export default function PlasmidMap() {
   return (
     <div className="flex items-center justify-center" style={{ minHeight: '100vh', background: '#000', padding: '24px' }}>
       <div style={{ width: 'min(92vmin, 820px)', height: 'min(92vmin, 820px)', position: 'relative' }}>
-        <svg viewBox="0 0 1060 1060" width="100%" height="100%" fontFamily={FONT}>
+        <svg viewBox="0 0 1140 1140" width="100%" height="100%" fontFamily={FONT}>
           <style>
             {`
-              .plasmid-feature path { transition: filter 0.15s ease; }
-              .plasmid-feature:hover path { filter: brightness(1.3); }
+              .plasmid-feature path {
+                transition: filter 0.2s ease, transform 0.2s ease;
+                transform-box: fill-box;
+                transform-origin: center;
+              }
+              .plasmid-feature text { transition: filter 0.2s ease; }
+              .plasmid-feature:hover path {
+                filter: brightness(1.55) saturate(1.5) drop-shadow(0 0 16px currentColor);
+                transform: scale(1.045);
+              }
+              .plasmid-feature:hover text { filter: brightness(1.25); }
               .plasmid-cutsite rect { transition: filter 0.15s ease; }
               .plasmid-cutsite:hover rect { filter: brightness(1.6); }
+              .plasmid-primer {
+                opacity: 0;
+                transition: stroke-dashoffset 0.7s ease, opacity 0.1s ease;
+              }
+              .plasmid-feature:hover .plasmid-primer {
+                opacity: 1;
+                stroke-dashoffset: 0;
+              }
               .plasmid-ring {
-                animation: plasmid-spin 300s linear infinite;
+                animation: plasmid-spin 1800s linear infinite;
                 transform-origin: ${CX}px ${CY}px;
                 will-change: transform;
                 backface-visibility: hidden;
@@ -325,13 +375,13 @@ export default function PlasmidMap() {
             ))}
 
             {/* social cut-sites */}
-            <CutSite bp={1150} label="GitHub" href="https://github.com/ccans/neevmangalofficial" external total={total} accent="#e5e5e5" />
-            <CutSite bp={1550} label="LinkedIn" href="https://www.linkedin.com/in/neev-mangal-b72186219/" external total={total} accent="#5fa8e0" />
-            <CutSite bp={1950} label="Copy Link" onClick={copyLink} total={total} accent="#d6b8f5" />
+            <CutSite bp={300} label="GitHub" href="https://github.com/ccans/neevmangalofficial" external total={total} accent="#e5e5e5" />
+            <CutSite bp={1150} label="LinkedIn" href="https://www.linkedin.com/in/neev-mangal-b72186219/" external total={total} accent="#5fa8e0" />
+            <CutSite bp={1900} label="Copy Link" onClick={copyLink} total={total} accent="#d6b8f5" />
 
             <text
-              x={polar(CX, CY, PILL_R + 32, coordAngle(1950, total)).x}
-              y={polar(CX, CY, PILL_R + 32, coordAngle(1950, total)).y}
+              x={polar(CX, CY, PILL_R + 32, coordAngle(1900, total)).x}
+              y={polar(CX, CY, PILL_R + 32, coordAngle(1900, total)).y}
               ref={copiedRef}
               textAnchor="middle"
               fontSize={13}
