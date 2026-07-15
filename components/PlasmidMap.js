@@ -139,6 +139,7 @@ function Feature({ feature, total, clickable }) {
         fontWeight={600}
         letterSpacing={0.3}
         fill={feature.textColor}
+        dominantBaseline="central"
       >
         <textPath href={`#${pathId}`} startOffset="50%" textAnchor="middle">
           {feature.label}
@@ -226,7 +227,11 @@ export default function PlasmidMap() {
 
   useEffect(() => {
     setTotal(computeBp());
-    const id = setInterval(() => setTotal(computeBp()), 60000);
+    // The displayed bp count only ticks up by 1 roughly every ~8-9 hours (1/1000
+    // of a year), so there's no need to re-render the whole diagram every
+    // minute — that just causes the rotation animation to hitch. Every 10
+    // minutes keeps it "live" without the stutter.
+    const id = setInterval(() => setTotal(computeBp()), 600000);
     return () => clearInterval(id);
   }, []);
 
@@ -274,6 +279,8 @@ export default function PlasmidMap() {
               .plasmid-ring {
                 animation: plasmid-spin 300s linear infinite;
                 transform-origin: ${CX}px ${CY}px;
+                will-change: transform;
+                backface-visibility: hidden;
               }
               @keyframes plasmid-spin {
                 from { transform: rotate(0deg); }
