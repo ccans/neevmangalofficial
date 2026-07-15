@@ -72,15 +72,6 @@ function arcTextPath(cx, cy, r, startBp, endBp, total) {
   return `M ${p1.x} ${p1.y} A ${r} ${r} 0 ${large} ${sweep} ${p2.x} ${p2.y}`;
 }
 
-// Length in px of the arc between two bp positions at radius r — used to
-// stretch label letter-spacing so short words visibly bend with the curve
-// instead of reading as a straight word merely tilted on an angle.
-function arcLengthPx(r, startBp, endBp, total) {
-  const a1 = coordAngle(startBp, total);
-  const a2 = coordAngle(endBp, total);
-  return r * (Math.abs(a2 - a1) * Math.PI) / 180;
-}
-
 function arrowPath(cx, cy, innerR, outerR, startBp, endBp, total) {
   const startAngle = coordAngle(startBp, total);
   const endAngle = coordAngle(endBp, total);
@@ -116,8 +107,8 @@ function slug(label) {
   return label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 }
 
-const CX = 450;
-const CY = 450;
+const CX = 530;
+const CY = 530;
 const BACKBONE_R = 430;
 const OUTER_R = 396;
 const INNER_R = 362;
@@ -130,9 +121,6 @@ function Feature({ feature, total, clickable }) {
   const d = arrowPath(CX, CY, INNER_R, OUTER_R, feature.start, feature.end, total);
   const pathId = `arc-${slug(feature.label)}`;
   const textD = arcTextPath(CX, CY, rMid, feature.start, feature.end, total);
-  // Stretch the label across most of its arrow's arc (rather than sitting
-  // compactly at its natural width) so the curvature is actually visible.
-  const textLength = arcLengthPx(rMid, feature.start, feature.end, total) * 0.8;
 
   const content = (
     <g style={clickable ? { cursor: 'pointer' } : undefined} className={clickable ? 'plasmid-feature' : undefined}>
@@ -146,18 +134,13 @@ function Feature({ feature, total, clickable }) {
         <path id={pathId} d={textD} fill="none" />
       </defs>
       <text
-        fontSize={19}
+        fontSize={17}
         fontFamily={FONT}
         fontWeight={600}
+        letterSpacing={0.3}
         fill={feature.textColor}
       >
-        <textPath
-          href={`#${pathId}`}
-          startOffset="50%"
-          textAnchor="middle"
-          textLength={textLength}
-          lengthAdjust="spacingAndGlyphs"
-        >
+        <textPath href={`#${pathId}`} startOffset="50%" textAnchor="middle">
           {feature.label}
         </textPath>
       </text>
@@ -281,7 +264,7 @@ export default function PlasmidMap() {
   return (
     <div className="flex items-center justify-center" style={{ minHeight: '100vh', background: '#000', padding: '24px' }}>
       <div style={{ width: 'min(92vmin, 820px)', height: 'min(92vmin, 820px)', position: 'relative' }}>
-        <svg viewBox="0 0 900 900" width="100%" height="100%" fontFamily={FONT}>
+        <svg viewBox="0 0 1060 1060" width="100%" height="100%" fontFamily={FONT}>
           <style>
             {`
               .plasmid-feature path { transition: filter 0.15s ease; }
@@ -290,7 +273,7 @@ export default function PlasmidMap() {
               .plasmid-cutsite:hover rect { filter: brightness(1.6); }
               .plasmid-ring {
                 animation: plasmid-spin 300s linear infinite;
-                transform-origin: 450px 450px;
+                transform-origin: ${CX}px ${CY}px;
               }
               @keyframes plasmid-spin {
                 from { transform: rotate(0deg); }
