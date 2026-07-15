@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
+import '@fontsource/rajdhani/500.css';
+import '@fontsource/rajdhani/600.css';
+import '@fontsource/rajdhani/700.css';
 
 // Birthday used to compute the "length" of the plasmid: whole years as
 // kilobases, plus the fraction of the current year already elapsed as the
 // fractional bp (e.g. 21 years + 30% of the way to 22 => ~21300 bp).
 const BIRTH_MONTH_INDEX = 3; // April (0-indexed)
 const BIRTH_DAY = 2;
+
+const FONT = "'Rajdhani', sans-serif";
 
 function computeBp() {
   const now = new Date();
@@ -46,6 +51,27 @@ function labelTransform(cx, cy, r, bp, total) {
   return { x, y, rotate };
 }
 
+// A simple single-arc path (for text to ride along via <textPath>). When the
+// midpoint sits in the bottom half of the circle, the path is drawn in
+// reverse so the text riding on it reads upright instead of upside-down.
+function arcTextPath(cx, cy, r, startBp, endBp, total) {
+  const startAngle = coordAngle(startBp, total);
+  const endAngle = coordAngle(endBp, total);
+  const mid = (bpFraction(startBp, total) + bpFraction(endBp, total)) / 2;
+  const visual = ((mid % 360) + 360) % 360;
+  const flip = visual > 90 && visual < 270;
+
+  const a1 = flip ? endAngle : startAngle;
+  const a2 = flip ? startAngle : endAngle;
+  const large = Math.abs(a2 - a1) > 180 ? 1 : 0;
+  const sweep = flip ? 0 : 1;
+
+  const p1 = polar(cx, cy, r, a1);
+  const p2 = polar(cx, cy, r, a2);
+
+  return `M ${p1.x} ${p1.y} A ${r} ${r} 0 ${large} ${sweep} ${p2.x} ${p2.y}`;
+}
+
 function arrowPath(cx, cy, innerR, outerR, startBp, endBp, total) {
   const startAngle = coordAngle(startBp, total);
   const endAngle = coordAngle(endBp, total);
@@ -77,6 +103,10 @@ function arrowPath(cx, cy, innerR, outerR, startBp, endBp, total) {
   ].join(' ');
 }
 
+function slug(label) {
+  return label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+}
+
 const CX = 450;
 const CY = 450;
 const BACKBONE_R = 430;
@@ -86,39 +116,33 @@ const TICK_R = 452;
 const PILL_LEADER_R = 434;
 const PILL_R = 470;
 
-const COLORS = {
-  yellow: '#f2d54c',
-  maroon: '#b04a80',
-  white: '#f4f4f4',
-  purple: '#d6b8f5',
-};
-
 function Feature({ feature, total, clickable }) {
-  const mid = (feature.start + feature.end) / 2;
-  const { x, y, rotate } = labelTransform(CX, CY, (INNER_R + OUTER_R) / 2, mid, total);
+  const rMid = (INNER_R + OUTER_R) / 2;
   const d = arrowPath(CX, CY, INNER_R, OUTER_R, feature.start, feature.end, total);
-  const textColor = feature.color === COLORS.white ? '#111' : '#1a1a1a';
+  const pathId = `arc-${slug(feature.label)}`;
+  const textD = arcTextPath(CX, CY, rMid, feature.start, feature.end, total);
 
   const content = (
     <g style={clickable ? { cursor: 'pointer' } : undefined} className={clickable ? 'plasmid-feature' : undefined}>
       <path
         d={d}
         fill={feature.color}
-        stroke={feature.color === COLORS.white ? '#888' : '#00000055'}
+        stroke={feature.textColor === '#fff' ? '#00000055' : '#00000040'}
         strokeWidth={1.5}
       />
+      <defs>
+        <path id={pathId} d={textD} fill="none" />
+      </defs>
       <text
-        x={x}
-        y={y}
-        transform={`rotate(${rotate} ${x} ${y})`}
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fontSize={17}
-        fontFamily="'JetBrains Mono', monospace"
+        fontSize={19}
+        fontFamily={FONT}
         fontWeight={600}
-        fill={textColor}
+        letterSpacing={0.5}
+        fill={feature.textColor}
       >
-        {feature.label}
+        <textPath href={`#${pathId}`} startOffset="50%" textAnchor="middle">
+          {feature.label}
+        </textPath>
       </text>
     </g>
   );
@@ -132,35 +156,49 @@ function Feature({ feature, total, clickable }) {
   );
 }
 
-function Pill({ bp, label, href, external, onClick, total }) {
+function CutSite({ bp, label, href, external, onClick, total, accent }) {
   const angle = coordAngle(bp, total);
-  const leaderStart = polar(CX, CY, PILL_LEADER_R, angle);
-  const pillCenter = polar(CX, CY, PILL_R, angle);
-  const width = Math.max(70, label.length * 9 + 20);
-  const height = 28;
+  const tickInner = polar(CX, CY, BACKBONE_R - 14, angle);
+  const tickOuter = polar(CX, CY, BACKBONE_R + 14, angle);
+  const leaderStart = polar(CX, CY, BACKBONE_R + 14, angle);
+  const labelAnchor = polar(CX, CY, PILL_R, angle);
+  const width = Math.max(64, label.length * 8 + 24);
+  const height = 24;
+  const onRight = Math.cos(((angle) * Math.PI) / 180) >= -0.05;
 
   const body = (
-    <g style={{ cursor: 'pointer' }}>
-      <line x1={leaderStart.x} y1={leaderStart.y} x2={pillCenter.x} y2={pillCenter.y} stroke="#d6b8f5" strokeWidth={1.5} />
+    <g style={{ cursor: 'pointer' }} className="plasmid-cutsite">
+      <line x1={tickInner.x} y1={tickInner.y} x2={tickOuter.x} y2={tickOuter.y} stroke={accent} strokeWidth={2} />
+      <circle cx={tickOuter.x} cy={tickOuter.y} r={2.5} fill={accent} />
+      <line x1={leaderStart.x} y1={leaderStart.y} x2={labelAnchor.x} y2={labelAnchor.y} stroke={accent} strokeWidth={1} strokeDasharray="2 2" opacity={0.8} />
       <rect
-        x={pillCenter.x - width / 2}
-        y={pillCenter.y - height / 2}
+        x={labelAnchor.x - width / 2}
+        y={labelAnchor.y - height / 2}
         width={width}
         height={height}
-        rx={height / 2}
-        fill={COLORS.purple}
-        stroke="#9b6fce"
-        strokeWidth={1.5}
+        rx={4}
+        fill="#0a0a0a"
+        stroke={accent}
+        strokeWidth={1.25}
+      />
+      <line
+        x1={labelAnchor.x - width / 2 + 4}
+        y1={labelAnchor.y - height / 2 + 4}
+        x2={labelAnchor.x - width / 2 + 4}
+        y2={labelAnchor.y + height / 2 - 4}
+        stroke={accent}
+        strokeWidth={2}
       />
       <text
-        x={pillCenter.x}
-        y={pillCenter.y}
+        x={labelAnchor.x + 3}
+        y={labelAnchor.y}
         textAnchor="middle"
         dominantBaseline="middle"
         fontSize={13}
-        fontFamily="'JetBrains Mono', monospace"
+        fontFamily={FONT}
         fontWeight={600}
-        fill="#2a0a42"
+        letterSpacing={0.3}
+        fill={accent}
       >
         {label}
       </text>
@@ -204,18 +242,17 @@ export default function PlasmidMap() {
   if (!total) {
     return (
       <div className="flex items-center justify-center" style={{ minHeight: '100vh', background: '#000' }}>
-        <span style={{ color: '#666', fontFamily: "'JetBrains Mono', monospace" }}>loading plasmid map...</span>
+        <span style={{ color: '#666', fontFamily: FONT }}>loading plasmid map...</span>
       </div>
     );
   }
 
   const features = [
-    { start: 200, end: 750, label: 'EST. 2005', color: COLORS.yellow },
-    { start: 2000, end: 5600, label: 'About Me', color: COLORS.white, href: '/aboutme' },
-    { start: 6100, end: 9100, label: 'Projects', color: COLORS.white, href: '/projects' },
-    { start: 9600, end: 11700, label: 'Writing', color: COLORS.white, href: '/writing' },
-    { start: 12000, end: 16000, label: 'Astrophotography', color: COLORS.maroon, href: '/astrophotography' },
-    { start: 18000, end: 21000, label: 'Resume', color: COLORS.maroon, href: '/resume' },
+    { start: 2000, end: 5600, label: 'About Me', color: '#6fb7e0', textColor: '#08202e', href: '/aboutme' },
+    { start: 6100, end: 9100, label: 'Projects', color: '#f2a154', textColor: '#3a1f00', href: '/projects' },
+    { start: 9600, end: 11700, label: 'Writing', color: '#8bd17c', textColor: '#0e2b0a', href: '/writing' },
+    { start: 12000, end: 16000, label: 'Astrophotography', color: '#c15fa0', textColor: '#2b0a20', href: '/astrophotography' },
+    { start: 18000, end: 21000, label: 'Resume', color: '#f2d54c', textColor: '#332900', href: '/resume' },
   ];
 
   const tickStep = 3000;
@@ -227,73 +264,92 @@ export default function PlasmidMap() {
   return (
     <div className="flex items-center justify-center" style={{ minHeight: '100vh', background: '#000', padding: '24px' }}>
       <div style={{ width: 'min(92vmin, 820px)', height: 'min(92vmin, 820px)', position: 'relative' }}>
-        <svg viewBox="0 0 900 900" width="100%" height="100%" fontFamily="'JetBrains Mono', monospace">
+        <svg viewBox="0 0 900 900" width="100%" height="100%" fontFamily={FONT}>
           <style>
             {`
               .plasmid-feature path { transition: filter 0.15s ease; }
-              .plasmid-feature:hover path { filter: brightness(1.25); }
-              a:hover text { filter: brightness(1.3); }
+              .plasmid-feature:hover path { filter: brightness(1.3); }
+              .plasmid-cutsite rect { transition: filter 0.15s ease; }
+              .plasmid-cutsite:hover rect { filter: brightness(1.6); }
+              .plasmid-ring {
+                animation: plasmid-spin 300s linear infinite;
+                transform-origin: 450px 450px;
+              }
+              .plasmid-ring:hover {
+                animation-play-state: paused;
+              }
+              @keyframes plasmid-spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+              }
             `}
           </style>
 
-          {/* backbone */}
-          <circle cx={CX} cy={CY} r={BACKBONE_R} fill="none" stroke="#888" strokeWidth={2} />
-          <circle cx={CX} cy={CY} r={BACKBONE_R - 6} fill="none" stroke="#888" strokeWidth={1} />
+          <g className="plasmid-ring">
+            <circle cx={CX} cy={CY} r={BACKBONE_R} fill="transparent" />
 
-          {/* tick marks */}
-          {ticks.map((bp) => {
-            const angle = coordAngle(bp, total);
-            const p1 = polar(CX, CY, BACKBONE_R - 6, angle);
-            const p2 = polar(CX, CY, BACKBONE_R + 8, angle);
-            const { x, y, rotate } = labelTransform(CX, CY, TICK_R, bp, total);
-            return (
-              <g key={bp}>
-                <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#888" strokeWidth={1.5} />
-                <text
-                  x={x}
-                  y={y}
-                  transform={`rotate(${rotate} ${x} ${y})`}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  fontSize={13}
-                  fill="#888"
-                >
-                  {bp.toLocaleString()}
-                </text>
-              </g>
-            );
-          })}
+            {/* backbone */}
+            <circle cx={CX} cy={CY} r={BACKBONE_R} fill="none" stroke="#666" strokeWidth={2} />
+            <circle cx={CX} cy={CY} r={BACKBONE_R - 6} fill="none" stroke="#666" strokeWidth={1} />
 
-          {/* feature arrows */}
-          {features.map((f) => (
-            <Feature key={f.label} feature={f} total={total} clickable={!!f.href} />
-          ))}
+            {/* tick marks */}
+            {ticks.map((bp) => {
+              const angle = coordAngle(bp, total);
+              const p1 = polar(CX, CY, BACKBONE_R - 6, angle);
+              const p2 = polar(CX, CY, BACKBONE_R + 8, angle);
+              const { x, y, rotate } = labelTransform(CX, CY, TICK_R, bp, total);
+              return (
+                <g key={bp}>
+                  <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#666" strokeWidth={1.5} />
+                  <text
+                    x={x}
+                    y={y}
+                    transform={`rotate(${rotate} ${x} ${y})`}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize={13}
+                    fontWeight={500}
+                    fill="#777"
+                  >
+                    {bp.toLocaleString()}
+                  </text>
+                </g>
+              );
+            })}
 
-          {/* social pills */}
-          <Pill bp={1150} label="GitHub" href="https://github.com/ccans/neevmangalofficial" external total={total} />
-          <Pill bp={1550} label="LinkedIn" href="https://www.linkedin.com/in/neev-mangal-b72186219/" external total={total} />
-          <Pill bp={1900} label="Copy Link" onClick={copyLink} total={total} />
+            {/* feature arrows */}
+            {features.map((f) => (
+              <Feature key={f.label} feature={f} total={total} clickable={!!f.href} />
+            ))}
 
-          <text
-            x={polar(CX, CY, PILL_R + 46, coordAngle(1900, total)).x}
-            y={polar(CX, CY, PILL_R + 46, coordAngle(1900, total)).y}
-            ref={copiedRef}
-            textAnchor="middle"
-            fontSize={13}
-            fill="#f2d54c"
-            style={{ opacity: 0, transition: 'opacity 0.3s ease' }}
-          >
-            copied!
-          </text>
+            {/* social cut-sites */}
+            <CutSite bp={1150} label="GitHub" href="https://github.com/ccans/neevmangalofficial" external total={total} accent="#e5e5e5" />
+            <CutSite bp={1550} label="LinkedIn" href="https://www.linkedin.com/in/neev-mangal-b72186219/" external total={total} accent="#5fa8e0" />
+            <CutSite bp={1950} label="Copy Link" onClick={copyLink} total={total} accent="#d6b8f5" />
 
-          {/* center label */}
-          <text x={CX} y={CY - 18} textAnchor="middle" fontSize={40} fontWeight={700} fill="#fff" letterSpacing={1}>
+            <text
+              x={polar(CX, CY, PILL_R + 32, coordAngle(1950, total)).x}
+              y={polar(CX, CY, PILL_R + 32, coordAngle(1950, total)).y}
+              ref={copiedRef}
+              textAnchor="middle"
+              fontSize={13}
+              fontFamily={FONT}
+              fontWeight={600}
+              fill="#d6b8f5"
+              style={{ opacity: 0, transition: 'opacity 0.3s ease' }}
+            >
+              copied!
+            </text>
+          </g>
+
+          {/* center label - stays fixed while the ring rotates */}
+          <text x={CX} y={CY - 18} textAnchor="middle" fontSize={44} fontWeight={700} fill="#fff" letterSpacing={1}>
             NEEV MANGAL
           </text>
-          <text x={CX} y={CY + 18} textAnchor="middle" fontSize={16} fill="#999">
+          <text x={CX} y={CY + 18} textAnchor="middle" fontSize={17} fontWeight={500} fill="#999">
             pNM-SWE-Photographer-Writer
           </text>
-          <text x={CX} y={CY + 46} textAnchor="middle" fontSize={16} fill="#999">
+          <text x={CX} y={CY + 46} textAnchor="middle" fontSize={17} fontWeight={500} fill="#999">
             {total.toLocaleString()} bp
           </text>
         </svg>
