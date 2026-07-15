@@ -72,6 +72,15 @@ function arcTextPath(cx, cy, r, startBp, endBp, total) {
   return `M ${p1.x} ${p1.y} A ${r} ${r} 0 ${large} ${sweep} ${p2.x} ${p2.y}`;
 }
 
+// Length in px of the arc between two bp positions at radius r — used to
+// stretch label letter-spacing so short words visibly bend with the curve
+// instead of reading as a straight word merely tilted on an angle.
+function arcLengthPx(r, startBp, endBp, total) {
+  const a1 = coordAngle(startBp, total);
+  const a2 = coordAngle(endBp, total);
+  return r * (Math.abs(a2 - a1) * Math.PI) / 180;
+}
+
 function arrowPath(cx, cy, innerR, outerR, startBp, endBp, total) {
   const startAngle = coordAngle(startBp, total);
   const endAngle = coordAngle(endBp, total);
@@ -121,6 +130,9 @@ function Feature({ feature, total, clickable }) {
   const d = arrowPath(CX, CY, INNER_R, OUTER_R, feature.start, feature.end, total);
   const pathId = `arc-${slug(feature.label)}`;
   const textD = arcTextPath(CX, CY, rMid, feature.start, feature.end, total);
+  // Stretch the label across most of its arrow's arc (rather than sitting
+  // compactly at its natural width) so the curvature is actually visible.
+  const textLength = arcLengthPx(rMid, feature.start, feature.end, total) * 0.8;
 
   const content = (
     <g style={clickable ? { cursor: 'pointer' } : undefined} className={clickable ? 'plasmid-feature' : undefined}>
@@ -137,10 +149,15 @@ function Feature({ feature, total, clickable }) {
         fontSize={19}
         fontFamily={FONT}
         fontWeight={600}
-        letterSpacing={0.5}
         fill={feature.textColor}
       >
-        <textPath href={`#${pathId}`} startOffset="50%" textAnchor="middle">
+        <textPath
+          href={`#${pathId}`}
+          startOffset="50%"
+          textAnchor="middle"
+          textLength={textLength}
+          lengthAdjust="spacingAndGlyphs"
+        >
           {feature.label}
         </textPath>
       </text>
@@ -275,9 +292,6 @@ export default function PlasmidMap() {
                 animation: plasmid-spin 300s linear infinite;
                 transform-origin: 450px 450px;
               }
-              .plasmid-ring:hover {
-                animation-play-state: paused;
-              }
               @keyframes plasmid-spin {
                 from { transform: rotate(0deg); }
                 to { transform: rotate(360deg); }
@@ -286,8 +300,6 @@ export default function PlasmidMap() {
           </style>
 
           <g className="plasmid-ring">
-            <circle cx={CX} cy={CY} r={BACKBONE_R} fill="transparent" />
-
             {/* backbone */}
             <circle cx={CX} cy={CY} r={BACKBONE_R} fill="none" stroke="#666" strokeWidth={2} />
             <circle cx={CX} cy={CY} r={BACKBONE_R - 6} fill="none" stroke="#666" strokeWidth={1} />
