@@ -333,7 +333,7 @@ export default function PlasmidMap() {
 
   const features = [
     { start: 2000, end: 5600, label: 'About Me', color: '#6fb7e0', textColor: '#08202e', href: '/aboutme' },
-    { start: 6100, end: 9100, label: 'Projects', color: '#f2a154', textColor: '#3a1f00', href: '/projects' },
+    // { start: 6100, end: 9100, label: 'Projects', color: '#f2a154', textColor: '#3a1f00', href: '/projects' },
     { start: 9600, end: 11700, label: 'Writing', color: '#8bd17c', textColor: '#0e2b0a', href: '/writing' },
     { start: 12000, end: 16000, label: 'Astrophotography', color: '#c15fa0', textColor: '#2b0a20', href: '/astrophotography' },
     { start: 18000, end: 21000, label: 'Resume', color: '#f2d54c', textColor: '#332900', href: '/resume' },
