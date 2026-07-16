@@ -236,7 +236,6 @@ function Feature({ feature, total, clickable, index, onHover }) {
           {feature.label}
         </textPath>
       </text>
-      {clickable && <Polymerase feature={feature} total={total} />}
     </g>
   );
 
@@ -424,15 +423,14 @@ export default function PlasmidMap() {
               .plasmid-highlight { opacity: 0; transition: opacity 0.2s ease; }
               .plasmid-feature:hover .plasmid-highlight { opacity: 1; }
 
-              /* DNA polymerase travels the region once (per hover), slowly */
-              .plasmid-pol { opacity: 0; offset-distance: 0%; transition: opacity 0.2s ease; }
-              .plasmid-feature:hover .plasmid-pol {
-                opacity: 1;
-                animation: pol-travel 4.8s linear forwards;
-              }
+              /* DNA polymerase: mounted only while a feature is hovered, so it
+                 runs a single pass, then fades out as it reaches the region end. */
+              .plasmid-pol { animation: pol-travel 3.84s linear forwards; }
               @keyframes pol-travel {
-                from { offset-distance: 0%; }
-                to { offset-distance: 100%; }
+                0%   { offset-distance: 0%;   opacity: 0; }
+                7%   { opacity: 1; }
+                88%  { opacity: 1; }
+                100% { offset-distance: 100%; opacity: 0; }
               }
 
               /* one-time staggered entrance */
@@ -491,6 +489,10 @@ export default function PlasmidMap() {
           <circle className="center-glow" cx={CX} cy={CY} r={200} fill="url(#centerGlow)" />
 
           <g className="plasmid-ring">
+            {/* polymerase — rendered first so it travels BEHIND the backbone
+                ring; mounted only while a feature is hovered, so it plays once. */}
+            {hovered && <Polymerase key={hovered.label} feature={hovered} total={total} />}
+
             {/* backbone */}
             <circle cx={CX} cy={CY} r={BACKBONE_R} fill="none" stroke="#666" strokeWidth={2} />
             <circle cx={CX} cy={CY} r={BACKBONE_R - 6} fill="none" stroke="#666" strokeWidth={1} />
