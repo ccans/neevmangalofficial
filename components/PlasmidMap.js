@@ -163,29 +163,32 @@ function FeatureHighlight({ feature, total }) {
   );
 }
 
-// A "DNA Polymerase" — an oval that, on hover, travels along the feature's arc
-// (via CSS motion path) as if transcribing that stretch. offset-path keeps it
-// glued to the curve; the animation only runs while the feature is hovered.
+// A "DNA Polymerase" — a stylized enzyme that, on hover, travels along the
+// outer backbone ring (the DNA strand itself) across the feature's span, as
+// if replicating that stretch. offset-path keeps it glued to the ring; the
+// animation only runs while the feature is hovered.
 function Polymerase({ feature, total }) {
-  const rMid = (INNER_R + OUTER_R) / 2;
   const a1 = coordAngle(feature.start, total);
   const a2 = coordAngle(feature.end, total);
   const large = Math.abs(a2 - a1) > 180 ? 1 : 0;
-  const p1 = polar(CX, CY, rMid, a1);
-  const p2 = polar(CX, CY, rMid, a2);
-  const travelPath = `path('M ${p1.x} ${p1.y} A ${rMid} ${rMid} 0 ${large} 1 ${p2.x} ${p2.y}')`;
+  const p1 = polar(CX, CY, BACKBONE_R, a1);
+  const p2 = polar(CX, CY, BACKBONE_R, a2);
+  const travelPath = `path('M ${p1.x} ${p1.y} A ${BACKBONE_R} ${BACKBONE_R} 0 ${large} 1 ${p2.x} ${p2.y}')`;
 
   return (
-    <g
-      className="plasmid-pol"
-      style={{ offsetPath: travelPath, offsetRotate: 'auto' }}
-    >
-      {/* soft glow */}
-      <ellipse cx={0} cy={0} rx={30} ry={20} fill={feature.color} opacity={0.25} />
-      {/* enzyme body — pale so it reads against the same-colored gene */}
-      <ellipse cx={0} cy={0} rx={24} ry={15} fill="#f4f7fb" opacity={0.95} stroke={feature.color} strokeWidth={2.5} />
-      {/* active-site cleft */}
-      <ellipse cx={0} cy={0} rx={7} ry={9} fill={feature.color} opacity={0.85} />
+    <g className="plasmid-pol" style={{ offsetPath: travelPath, offsetRotate: '0deg' }}>
+      {/* feature-colored activation glow */}
+      <ellipse cx={0} cy={-3} rx={28} ry={24} fill={feature.color} opacity={0.22} />
+      {/* enzyme illustration (grayscale blob on a pedestal base) */}
+      <rect x={-17} y={5} width={34} height={15} rx={7} fill="#f0f0f0" stroke="#8c8c8c" strokeWidth={1.6} />
+      <path
+        d="M -18 3 C -21 -11 -11 -23 2 -21 C 8 -20 9 -16 14 -15 C 21 -14 23 -5 18 1 C 16 3 13 4 9 4 L -13 4 C -17 4 -18 4 -18 3 Z"
+        fill="#ececec"
+        stroke="#8c8c8c"
+        strokeWidth={1.6}
+      />
+      <ellipse cx={-6} cy={-12} rx={7} ry={5} fill="#f8f8f8" opacity={0.75} />
+      <path d="M 9 -15 C 5 -8 6 0 8 4" fill="none" stroke="#9a9a9a" strokeWidth={1.2} opacity={0.8} />
     </g>
   );
 }
