@@ -198,6 +198,73 @@ function Polymerase({ feature, total }) {
   );
 }
 
+// Build a wiggly strand that hugs the arc just inside the ring, with a radial
+// sine wiggle. `phase` shifts the wave — sampling several phases lets us morph
+// between them for a living, soft-body undulation. Returns the path + length.
+function wigglyStrand(startBp, endBp, total, baseR, amp, phase) {
+  const a1 = coordAngle(startBp, total);
+  const a2 = coordAngle(endBp, total);
+  const arcLen = (baseR * Math.abs(a2 - a1) * Math.PI) / 180;
+  const waves = Math.max(2, Math.round(arcLen / 34));
+  const N = 48;
+  let d = '';
+  let length = 0;
+  let prev = null;
+  for (let i = 0; i <= N; i++) {
+    const f = i / N;
+    const ang = a1 + (a2 - a1) * f;
+    // taper the wiggle to zero at the anchored (start) end so it "sprouts"
+    const envelope = Math.min(1, f * 6);
+    const r = baseR + amp * envelope * Math.sin(2 * Math.PI * waves * f + phase);
+    const p = polar(CX, CY, r, ang);
+    d += `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(2)} ${p.y.toFixed(2)} `;
+    if (prev) length += Math.hypot(p.x - prev.x, p.y - prev.y);
+    prev = p;
+  }
+  return { d: d.trim(), length };
+}
+
+const TRANSCRIPT_R = BACKBONE_R - 15;
+const TRANSCRIPT_AMP = 6;
+
+// Per-feature @keyframes that morph the path `d` between phase-shifted wiggles,
+// giving the strand a living, soft-body undulation (driven by CSS so it runs
+// where SMIL/rAF are throttled). Emitted once into the SVG <style> block.
+function wiggleKeyframesFor(feature, total) {
+  const p = (phase) => wigglyStrand(feature.start, feature.end, total, TRANSCRIPT_R, TRANSCRIPT_AMP, phase).d;
+  return `@keyframes wiggle-${slug(feature.label)} {
+    0%   { d: path("${p(0)}"); }
+    25%  { d: path("${p(Math.PI / 2)}"); }
+    50%  { d: path("${p(Math.PI)}"); }
+    75%  { d: path("${p((3 * Math.PI) / 2)}"); }
+    100% { d: path("${p(2 * Math.PI)}"); }
+  }`;
+}
+
+// The nascent RNA transcript — a wiggly line that elongates behind the
+// polymerase (revealed via stroke-dashoffset synced to the enzyme's travel)
+// while continuously undulating (CSS `d` morph, see wiggleKeyframesFor).
+function Transcript({ feature, total }) {
+  const base = wigglyStrand(feature.start, feature.end, total, TRANSCRIPT_R, TRANSCRIPT_AMP, 0);
+  const L = base.length;
+
+  return (
+    <path
+      className="plasmid-transcript"
+      d={base.d}
+      fill="none"
+      stroke={feature.color}
+      strokeWidth={2.5}
+      strokeLinecap="round"
+      strokeDasharray={L}
+      style={{
+        '--tlen': `${L}px`,
+        animation: `transcript-grow 3.84s linear forwards, wiggle-${slug(feature.label)} 1.8s linear infinite`,
+      }}
+    />
+  );
+}
+
 function Feature({ feature, total, clickable, index, onHover }) {
   const rMid = (INNER_R + OUTER_R) / 2;
   const d = arrowPath(CX, CY, INNER_R, OUTER_R, feature.start, feature.end, total);
@@ -383,6 +450,9 @@ export default function PlasmidMap() {
     ticks.push(bp);
   }
 
+  // Per-feature soft-body wiggle keyframes for the transcript strand.
+  const wiggleKeyframes = features.filter((f) => f.href).map((f) => wiggleKeyframesFor(f, total)).join('\n');
+
   return (
     <div className="plasmid-page flex items-center justify-center">
       <div className="plasmid-topo-bg" aria-hidden="true" />
@@ -432,6 +502,17 @@ export default function PlasmidMap() {
                 88%  { opacity: 1; }
                 100% { offset-distance: 100%; opacity: 0; }
               }
+
+              /* Nascent transcript: elongates behind the enzyme in lock-step
+                 with its travel (dashoffset var(--tlen) -> 0), then fades out.
+                 The animation (grow + per-feature wiggle) is set inline. */
+              @keyframes transcript-grow {
+                0%   { stroke-dashoffset: var(--tlen); opacity: 0; }
+                7%   { opacity: 0.9; }
+                90%  { opacity: 0.9; }
+                100% { stroke-dashoffset: 0; opacity: 0; }
+              }
+              ${wiggleKeyframes}
 
               /* one-time staggered entrance */
               .plasmid-enter {
@@ -489,8 +570,10 @@ export default function PlasmidMap() {
           <circle className="center-glow" cx={CX} cy={CY} r={200} fill="url(#centerGlow)" />
 
           <g className="plasmid-ring">
-            {/* polymerase — rendered first so it travels BEHIND the backbone
-                ring; mounted only while a feature is hovered, so it plays once. */}
+            {/* polymerase + its nascent transcript — rendered first so they
+                travel BEHIND the backbone ring; mounted only while a feature is
+                hovered, so they play once. */}
+            {hovered && <Transcript key={`t-${hovered.label}`} feature={hovered} total={total} />}
             {hovered && <Polymerase key={hovered.label} feature={hovered} total={total} />}
 
             {/* backbone */}
