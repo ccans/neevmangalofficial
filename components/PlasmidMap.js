@@ -113,32 +113,70 @@ const BACKBONE_R = 430;
 const OUTER_R = 396;
 const INNER_R = 362;
 const TICK_R = 452;
-const PILL_LEADER_R = 434;
 const PILL_R = 470;
-const PRIMER_NEAR_R = BACKBONE_R + 10;
-const PRIMER_FAR_R = BACKBONE_R + 100;
+const PRIMER_R = OUTER_R + 15;
 
-// A radial "primer" line that stays hidden (drawn but zero-length via
-// stroke-dashoffset) until its parent .plasmid-feature is hovered, then
-// draws itself inward from outside the backbone to the feature's edge.
-function Primer({ angle, accent }) {
-  const near = polar(CX, CY, PRIMER_NEAR_R, angle);
-  const far = polar(CX, CY, PRIMER_FAR_R, angle);
-  const len = PRIMER_FAR_R - PRIMER_NEAR_R;
+// Drifting background nucleotides — decorative "floating DNA bases". Generated
+// once (deterministically) so positions are stable across renders.
+const NUC_CHARS = ['A', 'T', 'G', 'C'];
+const NUC_COLORS = { A: '#6fb7e0', T: '#f2a154', G: '#8bd17c', C: '#c15fa0' };
+const NUCS = Array.from({ length: 20 }, (_, i) => {
+  const ch = NUC_CHARS[i % 4];
+  return {
+    ch,
+    color: NUC_COLORS[ch],
+    left: (i * 41 + 7) % 100,
+    delay: (i * 31) % 22,
+    duration: 18 + ((i * 7) % 12),
+    size: 14 + (i % 3) * 6,
+  };
+});
+
+// A PCR primer rendered as a short arc hugging the backbone with an arrowhead
+// at its 3' end. A forward/reverse pair flanks each feature, pointing toward
+// each other across the "amplicon" — revealed (annealing in) on hover.
+function Primer({ anchorBp, lenBp, dir, accent, total }) {
+  const fromBp = anchorBp;
+  const toBp = dir === 'fwd' ? anchorBp + lenBp : anchorBp - lenBp;
+  const a1 = coordAngle(fromBp, total);
+  const a2 = coordAngle(toBp, total);
+  const large = Math.abs(a2 - a1) > 180 ? 1 : 0;
+  const sweep = a2 > a1 ? 1 : 0;
+  const p1 = polar(CX, CY, PRIMER_R, a1);
+  const p2 = polar(CX, CY, PRIMER_R, a2);
+  const arcLen = (PRIMER_R * Math.abs(a2 - a1) * Math.PI) / 180;
+  const d = `M ${p1.x} ${p1.y} A ${PRIMER_R} ${PRIMER_R} 0 ${large} ${sweep} ${p2.x} ${p2.y}`;
+
+  // Tangent at the tip → arrowhead orientation.
+  const aRad = (a2 * Math.PI) / 180;
+  let dx = -Math.sin(aRad);
+  let dy = Math.cos(aRad);
+  if (!sweep) {
+    dx = -dx;
+    dy = -dy;
+  }
+  const headLen = 14;
+  const headW = 7;
+  const baseX = p2.x - dx * headLen;
+  const baseY = p2.y - dy * headLen;
+  const perpX = -dy;
+  const perpY = dx;
+  const head = `${p2.x},${p2.y} ${baseX + perpX * headW},${baseY + perpY * headW} ${baseX - perpX * headW},${baseY - perpY * headW}`;
 
   return (
-    <line
-      className="plasmid-primer"
-      x1={far.x}
-      y1={far.y}
-      x2={near.x}
-      y2={near.y}
-      stroke={accent}
-      strokeWidth={2.5}
-      strokeLinecap="round"
-      strokeDasharray={len}
-      strokeDashoffset={len}
-    />
+    <g className="plasmid-primer">
+      <path
+        className="plasmid-primer-arc"
+        d={d}
+        fill="none"
+        stroke={accent}
+        strokeWidth={3}
+        strokeLinecap="round"
+        strokeDasharray={arcLen}
+        strokeDashoffset={arcLen}
+      />
+      <polygon className="plasmid-primer-head" points={head} fill={accent} />
+    </g>
   );
 }
 
@@ -147,32 +185,33 @@ function Feature({ feature, total, clickable }) {
   const d = arrowPath(CX, CY, INNER_R, OUTER_R, feature.start, feature.end, total);
   const pathId = `arc-${slug(feature.label)}`;
   const textD = arcTextPath(CX, CY, rMid, feature.start, feature.end, total);
-  const startAngle = coordAngle(feature.start, total);
-  const endAngle = coordAngle(feature.end, total);
+  const primerBp = Math.min(1100, (feature.end - feature.start) * 0.34);
 
   const content = (
     <g
-      style={clickable ? { cursor: 'pointer', color: feature.color } : { color: feature.color }}
+      style={{ cursor: clickable ? 'pointer' : 'default', color: feature.color }}
       className={clickable ? 'plasmid-feature' : undefined}
     >
-      {clickable && <Primer angle={startAngle} accent={feature.color} />}
-      {clickable && <Primer angle={endAngle} accent={feature.color} />}
       <path
         d={d}
         fill={feature.color}
         stroke={feature.textColor === '#fff' ? '#00000055' : '#00000040'}
         strokeWidth={1.5}
       />
+      {clickable && <Primer anchorBp={feature.start} lenBp={primerBp} dir="fwd" accent={feature.color} total={total} />}
+      {clickable && <Primer anchorBp={feature.end} lenBp={primerBp} dir="rev" accent={feature.color} total={total} />}
       <defs>
         <path id={pathId} d={textD} fill="none" />
       </defs>
       <text
-        fontSize={17}
+        className="plasmid-feature-label"
+        fontSize={18}
         fontFamily={FONT}
-        fontWeight={600}
-        letterSpacing={0.3}
+        fontWeight={700}
+        letterSpacing={0.6}
         fill={feature.textColor}
         dominantBaseline="central"
+        style={{ userSelect: 'none' }}
       >
         <textPath href={`#${pathId}`} startOffset="50%" textAnchor="middle">
           {feature.label}
@@ -194,17 +233,15 @@ function CutSite({ bp, label, href, external, onClick, total, accent }) {
   const angle = coordAngle(bp, total);
   const tickInner = polar(CX, CY, BACKBONE_R - 14, angle);
   const tickOuter = polar(CX, CY, BACKBONE_R + 14, angle);
-  const leaderStart = polar(CX, CY, BACKBONE_R + 14, angle);
   const labelAnchor = polar(CX, CY, PILL_R, angle);
   const width = Math.max(64, label.length * 8 + 24);
   const height = 24;
-  const onRight = Math.cos(((angle) * Math.PI) / 180) >= -0.05;
 
   const body = (
     <g style={{ cursor: 'pointer' }} className="plasmid-cutsite">
       <line x1={tickInner.x} y1={tickInner.y} x2={tickOuter.x} y2={tickOuter.y} stroke={accent} strokeWidth={2} />
-      <circle cx={tickOuter.x} cy={tickOuter.y} r={2.5} fill={accent} />
-      <line x1={leaderStart.x} y1={leaderStart.y} x2={labelAnchor.x} y2={labelAnchor.y} stroke={accent} strokeWidth={1} strokeDasharray="2 2" opacity={0.8} />
+      <circle className="plasmid-cutsite-dot" cx={tickOuter.x} cy={tickOuter.y} r={2.5} fill={accent} />
+      <line x1={tickOuter.x} y1={tickOuter.y} x2={labelAnchor.x} y2={labelAnchor.y} stroke={accent} strokeWidth={1} strokeDasharray="2 2" opacity={0.8} />
       <rect
         x={labelAnchor.x - width / 2}
         y={labelAnchor.y - height / 2}
@@ -227,12 +264,13 @@ function CutSite({ bp, label, href, external, onClick, total, accent }) {
         x={labelAnchor.x + 3}
         y={labelAnchor.y}
         textAnchor="middle"
-        dominantBaseline="middle"
+        dominantBaseline="central"
         fontSize={13}
         fontFamily={FONT}
         fontWeight={600}
         letterSpacing={0.3}
         fill={accent}
+        style={{ userSelect: 'none' }}
       >
         {label}
       </text>
@@ -251,6 +289,32 @@ function CutSite({ bp, label, href, external, onClick, total, accent }) {
     <a href={href} aria-label={label} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined}>
       {body}
     </a>
+  );
+}
+
+function OriMarker({ total }) {
+  const angle = coordAngle(0, total);
+  const inner = polar(CX, CY, BACKBONE_R - 8, angle);
+  const dot = polar(CX, CY, BACKBONE_R, angle);
+  const labelPos = polar(CX, CY, BACKBONE_R - 30, angle);
+  return (
+    <g>
+      <circle className="plasmid-ori-dot" cx={dot.x} cy={dot.y} r={5} fill="#f2d54c" />
+      <circle cx={dot.x} cy={dot.y} r={2.5} fill="#fff" />
+      <text
+        x={labelPos.x}
+        y={labelPos.y}
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontSize={13}
+        fontFamily={FONT}
+        fontStyle="italic"
+        fontWeight={600}
+        fill="#f2d54c"
+      >
+        ori
+      </text>
+    </g>
   );
 }
 
@@ -300,8 +364,29 @@ export default function PlasmidMap() {
   }
 
   return (
-    <div className="flex items-center justify-center" style={{ minHeight: '100vh', background: '#000', padding: '24px' }}>
-      <div style={{ width: 'min(92vmin, 820px)', height: 'min(92vmin, 820px)', position: 'relative' }}>
+    <div
+      className="flex items-center justify-center"
+      style={{ position: 'relative', minHeight: '100vh', background: '#000', padding: '24px', overflow: 'hidden' }}
+    >
+      <div className="nuc-field" aria-hidden="true">
+        {NUCS.map((n, i) => (
+          <span
+            key={i}
+            className="nuc"
+            style={{
+              left: `${n.left}%`,
+              color: n.color,
+              fontSize: `${n.size}px`,
+              animationDelay: `${n.delay}s`,
+              animationDuration: `${n.duration}s`,
+            }}
+          >
+            {n.ch}
+          </span>
+        ))}
+      </div>
+
+      <div style={{ width: 'min(92vmin, 820px)', height: 'min(92vmin, 820px)', position: 'relative', zIndex: 1 }}>
         <svg viewBox="0 0 1140 1140" width="100%" height="100%" fontFamily={FONT}>
           <style>
             {`
@@ -310,22 +395,40 @@ export default function PlasmidMap() {
                 transform-box: fill-box;
                 transform-origin: center;
               }
-              .plasmid-feature text { transition: filter 0.2s ease; }
+              .plasmid-feature-label { transition: filter 0.2s ease; }
               .plasmid-feature:hover path {
                 filter: brightness(1.55) saturate(1.5) drop-shadow(0 0 16px currentColor);
                 transform: scale(1.045);
               }
-              .plasmid-feature:hover text { filter: brightness(1.25); }
+              .plasmid-feature:hover .plasmid-feature-label { filter: brightness(1.25); }
+
+              .plasmid-primer { opacity: 0; transition: opacity 0.15s ease; }
+              .plasmid-primer-arc { transition: stroke-dashoffset 0.55s ease; }
+              .plasmid-primer-head { opacity: 0; transition: opacity 0.2s ease 0.35s; }
+              .plasmid-feature:hover .plasmid-primer { opacity: 1; }
+              .plasmid-feature:hover .plasmid-primer-arc { stroke-dashoffset: 0; }
+              .plasmid-feature:hover .plasmid-primer-head { opacity: 1; }
+
               .plasmid-cutsite rect { transition: filter 0.15s ease; }
               .plasmid-cutsite:hover rect { filter: brightness(1.6); }
-              .plasmid-primer {
-                opacity: 0;
-                transition: stroke-dashoffset 0.7s ease, opacity 0.1s ease;
+              .plasmid-cutsite-dot { animation: cutsite-pulse 2.4s ease-in-out infinite; }
+              @keyframes cutsite-pulse {
+                0%, 100% { r: 2.5px; opacity: 1; }
+                50% { r: 4px; opacity: 0.65; }
               }
-              .plasmid-feature:hover .plasmid-primer {
-                opacity: 1;
-                stroke-dashoffset: 0;
+
+              .plasmid-ori-dot { animation: ori-pulse 2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+              @keyframes ori-pulse {
+                0%, 100% { opacity: 1; transform: scale(1); }
+                50% { opacity: 0.55; transform: scale(1.5); }
               }
+
+              .center-glow { animation: center-breathe 6s ease-in-out infinite; transform-box: view-box; transform-origin: ${CX}px ${CY}px; }
+              @keyframes center-breathe {
+                0%, 100% { opacity: 0.55; transform: scale(1); }
+                50% { opacity: 1; transform: scale(1.08); }
+              }
+
               .plasmid-ring {
                 animation: plasmid-spin 1800s linear infinite;
                 transform-origin: ${CX}px ${CY}px;
@@ -338,6 +441,16 @@ export default function PlasmidMap() {
               }
             `}
           </style>
+
+          <defs>
+            <radialGradient id="centerGlow">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.14" />
+              <stop offset="45%" stopColor="#9b6fce" stopOpacity="0.08" />
+              <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+
+          <circle className="center-glow" cx={CX} cy={CY} r={200} fill="url(#centerGlow)" />
 
           <g className="plasmid-ring">
             {/* backbone */}
@@ -358,7 +471,7 @@ export default function PlasmidMap() {
                     y={y}
                     transform={`rotate(${rotate} ${x} ${y})`}
                     textAnchor="middle"
-                    dominantBaseline="middle"
+                    dominantBaseline="central"
                     fontSize={13}
                     fontWeight={500}
                     fill="#777"
@@ -369,19 +482,21 @@ export default function PlasmidMap() {
               );
             })}
 
+            <OriMarker total={total} />
+
             {/* feature arrows */}
             {features.map((f) => (
               <Feature key={f.label} feature={f} total={total} clickable={!!f.href} />
             ))}
 
-            {/* social cut-sites */}
-            <CutSite bp={300} label="GitHub" href="https://github.com/ccans/neevmangalofficial" external total={total} accent="#e5e5e5" />
-            <CutSite bp={1150} label="LinkedIn" href="https://www.linkedin.com/in/neev-mangal-b72186219/" external total={total} accent="#5fa8e0" />
-            <CutSite bp={1900} label="Copy Link" onClick={copyLink} total={total} accent="#d6b8f5" />
+            {/* social cut-sites — spread to three opposing sides of the plasmid */}
+            <CutSite bp={800} label="GitHub" href="https://github.com/ccans/neevmangalofficial" external total={total} accent="#e5e5e5" />
+            <CutSite bp={9350} label="Copy Link" onClick={copyLink} total={total} accent="#d6b8f5" />
+            <CutSite bp={17000} label="LinkedIn" href="https://www.linkedin.com/in/neev-mangal-b72186219/" external total={total} accent="#5fa8e0" />
 
             <text
-              x={polar(CX, CY, PILL_R + 32, coordAngle(1900, total)).x}
-              y={polar(CX, CY, PILL_R + 32, coordAngle(1900, total)).y}
+              x={polar(CX, CY, PILL_R + 32, coordAngle(9350, total)).x}
+              y={polar(CX, CY, PILL_R + 32, coordAngle(9350, total)).y}
               ref={copiedRef}
               textAnchor="middle"
               fontSize={13}
@@ -406,6 +521,42 @@ export default function PlasmidMap() {
           </text>
         </svg>
       </div>
+
+      <style jsx>{`
+        .nuc-field {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .nuc {
+          position: absolute;
+          bottom: -50px;
+          font-family: ${FONT};
+          font-weight: 700;
+          opacity: 0;
+          animation-name: nuc-rise;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+        }
+        @keyframes nuc-rise {
+          0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0;
+          }
+          12% {
+            opacity: 0.16;
+          }
+          88% {
+            opacity: 0.16;
+          }
+          100% {
+            transform: translateY(-108vh) rotate(45deg);
+            opacity: 0;
+          }
+        }
+      `}</style>
     </div>
   );
 }
