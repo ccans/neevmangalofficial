@@ -175,20 +175,25 @@ function Polymerase({ feature, total }) {
   const p2 = polar(CX, CY, BACKBONE_R, a2);
   const travelPath = `path('M ${p1.x} ${p1.y} A ${BACKBONE_R} ${BACKBONE_R} 0 ${large} 1 ${p2.x} ${p2.y}')`;
 
+  // Image is 272x230; keep that aspect ratio. Centered on the origin so
+  // offset-path rides its middle along the ring. offset-rotate 'auto' keeps
+  // it tangent to the circle so it banks with the DNA as it travels.
+  const w = 52;
+  const h = (w * 230) / 272;
+
   return (
-    <g className="plasmid-pol" style={{ offsetPath: travelPath, offsetRotate: '0deg' }}>
+    <g className="plasmid-pol" style={{ offsetPath: travelPath, offsetRotate: 'auto' }}>
       {/* feature-colored activation glow */}
-      <ellipse cx={0} cy={-3} rx={28} ry={24} fill={feature.color} opacity={0.22} />
-      {/* enzyme illustration (grayscale blob on a pedestal base) */}
-      <rect x={-17} y={5} width={34} height={15} rx={7} fill="#f0f0f0" stroke="#8c8c8c" strokeWidth={1.6} />
-      <path
-        d="M -18 3 C -21 -11 -11 -23 2 -21 C 8 -20 9 -16 14 -15 C 21 -14 23 -5 18 1 C 16 3 13 4 9 4 L -13 4 C -17 4 -18 4 -18 3 Z"
-        fill="#ececec"
-        stroke="#8c8c8c"
-        strokeWidth={1.6}
+      <ellipse cx={0} cy={0} rx={30} ry={26} fill={feature.color} opacity={0.22} />
+      <image
+        href="/polymerase.png"
+        xlinkHref="/polymerase.png"
+        x={-w / 2}
+        y={-h / 2}
+        width={w}
+        height={h}
+        preserveAspectRatio="xMidYMid meet"
       />
-      <ellipse cx={-6} cy={-12} rx={7} ry={5} fill="#f8f8f8" opacity={0.75} />
-      <path d="M 9 -15 C 5 -8 6 0 8 4" fill="none" stroke="#9a9a9a" strokeWidth={1.2} opacity={0.8} />
     </g>
   );
 }
@@ -419,11 +424,11 @@ export default function PlasmidMap() {
               .plasmid-highlight { opacity: 0; transition: opacity 0.2s ease; }
               .plasmid-feature:hover .plasmid-highlight { opacity: 1; }
 
-              /* DNA polymerase travels the region only while hovered */
+              /* DNA polymerase travels the region once (per hover), slowly */
               .plasmid-pol { opacity: 0; offset-distance: 0%; transition: opacity 0.2s ease; }
               .plasmid-feature:hover .plasmid-pol {
                 opacity: 1;
-                animation: pol-travel 2.4s linear infinite;
+                animation: pol-travel 4.8s linear forwards;
               }
               @keyframes pol-travel {
                 from { offset-distance: 0%; }
