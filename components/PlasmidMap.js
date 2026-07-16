@@ -198,34 +198,47 @@ function Polymerase({ feature, total }) {
   );
 }
 
-// Build a wiggly strand that hugs the arc just inside the ring, with a radial
-// sine wiggle. `phase` shifts the wave — sampling several phases lets us morph
-// between them for a living, soft-body undulation. Returns the path + length.
+// Build a smooth wiggly strand hugging the arc just outside the ring, with a
+// radial sine wiggle tapered to zero at both ends (a jump-rope flop). Sampled
+// points are threaded through a Catmull-Rom spline emitted as cubic beziers so
+// the wiggle reads as soft curves rather than sharp zig-zags. `phase` shifts
+// the wave so several phases can be morphed for a living undulation.
 function wigglyStrand(startBp, endBp, total, baseR, amp, phase) {
   const a1 = coordAngle(startBp, total);
   const a2 = coordAngle(endBp, total);
   const arcLen = (baseR * Math.abs(a2 - a1) * Math.PI) / 180;
-  const waves = Math.max(2, Math.round(arcLen / 34));
-  const N = 48;
-  let d = '';
-  let length = 0;
-  let prev = null;
+  const waves = Math.max(2, Math.round(arcLen / 48));
+  const N = Math.max(36, waves * 6);
+  const pts = [];
   for (let i = 0; i <= N; i++) {
     const f = i / N;
     const ang = a1 + (a2 - a1) * f;
-    // taper the wiggle to zero at the anchored (start) end so it "sprouts"
-    const envelope = Math.min(1, f * 6);
+    const envelope = Math.sin(Math.PI * f); // 0 at both ends, 1 in the middle
     const r = baseR + amp * envelope * Math.sin(2 * Math.PI * waves * f + phase);
-    const p = polar(CX, CY, r, ang);
-    d += `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(2)} ${p.y.toFixed(2)} `;
-    if (prev) length += Math.hypot(p.x - prev.x, p.y - prev.y);
-    prev = p;
+    pts.push(polar(CX, CY, r, ang));
   }
-  return { d: d.trim(), length };
+  let d = `M ${pts[0].x.toFixed(2)} ${pts[0].y.toFixed(2)} `;
+  let length = 0;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] || pts[i];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[i + 2] || p2;
+    const c1x = p1.x + (p2.x - p0.x) / 6;
+    const c1y = p1.y + (p2.y - p0.y) / 6;
+    const c2x = p2.x - (p3.x - p1.x) / 6;
+    const c2y = p2.y - (p3.y - p1.y) / 6;
+    d += `C ${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${p2.x.toFixed(2)} ${p2.y.toFixed(2)} `;
+    length += Math.hypot(p2.x - p1.x, p2.y - p1.y);
+  }
+  // small margin so the dash length safely covers the (slightly longer) curve
+  return { d: d.trim(), length: length * 1.03 };
 }
 
-const TRANSCRIPT_R = BACKBONE_R + 16;
-const TRANSCRIPT_AMP = 6;
+// Kept close to the ring and modest in amplitude so the growing tip stays
+// within the polymerase's footprint (it draws over the strand → "materializing").
+const TRANSCRIPT_R = BACKBONE_R + 8;
+const TRANSCRIPT_AMP = 4.5;
 
 // Per-feature @keyframes that morph the path `d` between phase-shifted wiggles,
 // giving the strand a living, soft-body undulation (driven by CSS so it runs
@@ -493,14 +506,13 @@ export default function PlasmidMap() {
               .plasmid-highlight { opacity: 0; transition: opacity 0.2s ease; }
               .plasmid-feature:hover .plasmid-highlight { opacity: 1; }
 
-              /* DNA polymerase: mounted only while a feature is hovered, so it
-                 runs a single pass, then fades out as it reaches the region end. */
+              /* DNA polymerase: mounted only while a feature is hovered, runs a
+                 single pass, then parks at the region end (held by 'forwards'). */
               .plasmid-pol { animation: pol-travel 3.84s linear forwards; }
               @keyframes pol-travel {
                 0%   { offset-distance: 0%;   opacity: 0; }
                 7%   { opacity: 1; }
-                88%  { opacity: 1; }
-                100% { offset-distance: 100%; opacity: 0; }
+                100% { offset-distance: 100%; opacity: 1; }
               }
 
               /* Nascent transcript: elongates behind the enzyme in lock-step
