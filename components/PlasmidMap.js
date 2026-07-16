@@ -114,7 +114,7 @@ const OUTER_R = 396;
 const INNER_R = 362;
 const TICK_R = 452;
 const PILL_R = 470;
-const PRIMER_R = OUTER_R + 15;
+const HILITE_R = BACKBONE_R;
 
 // Drifting background nucleotides — decorative "floating DNA bases". Generated
 // once (deterministically) so positions are stable across renders.
@@ -132,50 +132,33 @@ const NUCS = Array.from({ length: 20 }, (_, i) => {
   };
 });
 
-// A PCR primer rendered as a short arc hugging the backbone with an arrowhead
-// at its 3' end. A forward/reverse pair flanks each feature, pointing toward
-// each other across the "amplicon" — revealed (annealing in) on hover.
-function Primer({ anchorBp, lenBp, dir, accent, total }) {
-  const fromBp = anchorBp;
-  const toBp = dir === 'fwd' ? anchorBp + lenBp : anchorBp - lenBp;
-  const a1 = coordAngle(fromBp, total);
-  const a2 = coordAngle(toBp, total);
-  const large = Math.abs(a2 - a1) > 180 ? 1 : 0;
-  const sweep = a2 > a1 ? 1 : 0;
-  const p1 = polar(CX, CY, PRIMER_R, a1);
-  const p2 = polar(CX, CY, PRIMER_R, a2);
-  const arcLen = (PRIMER_R * Math.abs(a2 - a1) * Math.PI) / 180;
-  const d = `M ${p1.x} ${p1.y} A ${PRIMER_R} ${PRIMER_R} 0 ${large} ${sweep} ${p2.x} ${p2.y}`;
+// A small triangle sitting on the backbone at `angle`, pointing radially
+// inward — a bracket marker at each edge of a highlighted feature section.
+function inwardArrowPoints(angle) {
+  const wDeg = 1.3;
+  const tip = polar(CX, CY, HILITE_R - 20, angle);
+  const b1 = polar(CX, CY, HILITE_R + 3, angle + wDeg);
+  const b2 = polar(CX, CY, HILITE_R + 3, angle - wDeg);
+  return `${tip.x},${tip.y} ${b1.x},${b1.y} ${b2.x},${b2.y}`;
+}
 
-  // Tangent at the tip → arrowhead orientation.
-  const aRad = (a2 * Math.PI) / 180;
-  let dx = -Math.sin(aRad);
-  let dy = Math.cos(aRad);
-  if (!sweep) {
-    dx = -dx;
-    dy = -dy;
-  }
-  const headLen = 14;
-  const headW = 7;
-  const baseX = p2.x - dx * headLen;
-  const baseY = p2.y - dy * headLen;
-  const perpX = -dy;
-  const perpY = dx;
-  const head = `${p2.x},${p2.y} ${baseX + perpX * headW},${baseY + perpY * headW} ${baseX - perpX * headW},${baseY - perpY * headW}`;
+// Lights up the matching section of the outer ring (as if highlighting that
+// stretch of DNA) with inward-pointing arrowheads bracketing each end.
+// Purely an opacity toggle on hover — cheap, no per-frame filters/animation.
+function FeatureHighlight({ feature, total }) {
+  const a1 = coordAngle(feature.start, total);
+  const a2 = coordAngle(feature.end, total);
+  const large = Math.abs(a2 - a1) > 180 ? 1 : 0;
+  const p1 = polar(CX, CY, HILITE_R, a1);
+  const p2 = polar(CX, CY, HILITE_R, a2);
+  const d = `M ${p1.x} ${p1.y} A ${HILITE_R} ${HILITE_R} 0 ${large} 1 ${p2.x} ${p2.y}`;
 
   return (
-    <g className="plasmid-primer">
-      <path
-        className="plasmid-primer-arc"
-        d={d}
-        fill="none"
-        stroke={accent}
-        strokeWidth={3}
-        strokeLinecap="round"
-        strokeDasharray={arcLen}
-        strokeDashoffset={arcLen}
-      />
-      <polygon className="plasmid-primer-head" points={head} fill={accent} />
+    <g className="plasmid-highlight">
+      <path d={d} fill="none" stroke={feature.color} strokeWidth={14} strokeLinecap="round" opacity={0.3} />
+      <path d={d} fill="none" stroke={feature.color} strokeWidth={5} strokeLinecap="round" />
+      <polygon points={inwardArrowPoints(a1)} fill={feature.color} />
+      <polygon points={inwardArrowPoints(a2)} fill={feature.color} />
     </g>
   );
 }
@@ -185,21 +168,20 @@ function Feature({ feature, total, clickable }) {
   const d = arrowPath(CX, CY, INNER_R, OUTER_R, feature.start, feature.end, total);
   const pathId = `arc-${slug(feature.label)}`;
   const textD = arcTextPath(CX, CY, rMid, feature.start, feature.end, total);
-  const primerBp = Math.min(1100, (feature.end - feature.start) * 0.34);
 
   const content = (
     <g
       style={{ cursor: clickable ? 'pointer' : 'default', color: feature.color }}
       className={clickable ? 'plasmid-feature' : undefined}
     >
+      {clickable && <FeatureHighlight feature={feature} total={total} />}
       <path
+        className="plasmid-arrow"
         d={d}
         fill={feature.color}
         stroke={feature.textColor === '#fff' ? '#00000055' : '#00000040'}
         strokeWidth={1.5}
       />
-      {clickable && <Primer anchorBp={feature.start} lenBp={primerBp} dir="fwd" accent={feature.color} total={total} />}
-      {clickable && <Primer anchorBp={feature.end} lenBp={primerBp} dir="rev" accent={feature.color} total={total} />}
       <defs>
         <path id={pathId} d={textD} fill="none" />
       </defs>
@@ -213,7 +195,7 @@ function Feature({ feature, total, clickable }) {
         dominantBaseline="central"
         style={{ userSelect: 'none' }}
       >
-        <textPath href={`#${pathId}`} startOffset="50%" textAnchor="middle">
+        <textPath xlinkHref={`#${pathId}`} href={`#${pathId}`} startOffset="50%" textAnchor="middle">
           {feature.label}
         </textPath>
       </text>
@@ -390,24 +372,20 @@ export default function PlasmidMap() {
         <svg viewBox="0 0 1140 1140" width="100%" height="100%" fontFamily={FONT}>
           <style>
             {`
-              .plasmid-feature path {
+              .plasmid-arrow {
                 transition: filter 0.2s ease, transform 0.2s ease;
                 transform-box: fill-box;
                 transform-origin: center;
               }
               .plasmid-feature-label { transition: filter 0.2s ease; }
-              .plasmid-feature:hover path {
-                filter: brightness(1.55) saturate(1.5) drop-shadow(0 0 16px currentColor);
+              .plasmid-feature:hover .plasmid-arrow {
+                filter: brightness(1.55) saturate(1.5);
                 transform: scale(1.045);
               }
               .plasmid-feature:hover .plasmid-feature-label { filter: brightness(1.25); }
 
-              .plasmid-primer { opacity: 0; transition: opacity 0.15s ease; }
-              .plasmid-primer-arc { transition: stroke-dashoffset 0.55s ease; }
-              .plasmid-primer-head { opacity: 0; transition: opacity 0.2s ease 0.35s; }
-              .plasmid-feature:hover .plasmid-primer { opacity: 1; }
-              .plasmid-feature:hover .plasmid-primer-arc { stroke-dashoffset: 0; }
-              .plasmid-feature:hover .plasmid-primer-head { opacity: 1; }
+              .plasmid-highlight { opacity: 0; transition: opacity 0.2s ease; }
+              .plasmid-feature:hover .plasmid-highlight { opacity: 1; }
 
               .plasmid-cutsite rect { transition: filter 0.15s ease; }
               .plasmid-cutsite:hover rect { filter: brightness(1.6); }
