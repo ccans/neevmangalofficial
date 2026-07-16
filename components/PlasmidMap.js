@@ -514,7 +514,7 @@ export default function PlasmidMap() {
             NEEV MANGAL
           </text>
           <text x={CX} y={CY + 18} textAnchor="middle" fontSize={17} fontWeight={500} fill="#999">
-            pNM-SWE-Photographer-Writer
+            Synthetic-Biologist
           </text>
           <text x={CX} y={CY + 46} textAnchor="middle" fontSize={17} fontWeight={500} fill="#999">
             {total.toLocaleString()} bp
