@@ -163,7 +163,34 @@ function FeatureHighlight({ feature, total }) {
   );
 }
 
-function Feature({ feature, total, clickable }) {
+// A "DNA Polymerase" — an oval that, on hover, travels along the feature's arc
+// (via CSS motion path) as if transcribing that stretch. offset-path keeps it
+// glued to the curve; the animation only runs while the feature is hovered.
+function Polymerase({ feature, total }) {
+  const rMid = (INNER_R + OUTER_R) / 2;
+  const a1 = coordAngle(feature.start, total);
+  const a2 = coordAngle(feature.end, total);
+  const large = Math.abs(a2 - a1) > 180 ? 1 : 0;
+  const p1 = polar(CX, CY, rMid, a1);
+  const p2 = polar(CX, CY, rMid, a2);
+  const travelPath = `path('M ${p1.x} ${p1.y} A ${rMid} ${rMid} 0 ${large} 1 ${p2.x} ${p2.y}')`;
+
+  return (
+    <g
+      className="plasmid-pol"
+      style={{ offsetPath: travelPath, offsetRotate: 'auto' }}
+    >
+      {/* soft glow */}
+      <ellipse cx={0} cy={0} rx={30} ry={20} fill={feature.color} opacity={0.25} />
+      {/* enzyme body — pale so it reads against the same-colored gene */}
+      <ellipse cx={0} cy={0} rx={24} ry={15} fill="#f4f7fb" opacity={0.95} stroke={feature.color} strokeWidth={2.5} />
+      {/* active-site cleft */}
+      <ellipse cx={0} cy={0} rx={7} ry={9} fill={feature.color} opacity={0.85} />
+    </g>
+  );
+}
+
+function Feature({ feature, total, clickable, index, onHover }) {
   const rMid = (INNER_R + OUTER_R) / 2;
   const d = arrowPath(CX, CY, INNER_R, OUTER_R, feature.start, feature.end, total);
   const pathId = `arc-${slug(feature.label)}`;
@@ -171,8 +198,10 @@ function Feature({ feature, total, clickable }) {
 
   const content = (
     <g
-      style={{ cursor: clickable ? 'pointer' : 'default', color: feature.color }}
-      className={clickable ? 'plasmid-feature' : undefined}
+      style={{ cursor: clickable ? 'pointer' : 'default', color: feature.color, animationDelay: `${0.15 + index * 0.12}s` }}
+      className={clickable ? 'plasmid-feature plasmid-enter' : 'plasmid-enter'}
+      onMouseEnter={clickable && onHover ? () => onHover(feature) : undefined}
+      onMouseLeave={clickable && onHover ? () => onHover(null) : undefined}
     >
       {clickable && <FeatureHighlight feature={feature} total={total} />}
       <path
@@ -199,6 +228,7 @@ function Feature({ feature, total, clickable }) {
           {feature.label}
         </textPath>
       </text>
+      {clickable && <Polymerase feature={feature} total={total} />}
     </g>
   );
 
@@ -213,44 +243,44 @@ function Feature({ feature, total, clickable }) {
 
 function CutSite({ bp, label, href, external, onClick, total, accent }) {
   const angle = coordAngle(bp, total);
-  const tickInner = polar(CX, CY, BACKBONE_R - 14, angle);
-  const tickOuter = polar(CX, CY, BACKBONE_R + 14, angle);
-  const labelAnchor = polar(CX, CY, PILL_R, angle);
-  const width = Math.max(64, label.length * 8 + 24);
-  const height = 24;
+  const tickInner = polar(CX, CY, BACKBONE_R - 21, angle);
+  const tickOuter = polar(CX, CY, BACKBONE_R + 21, angle);
+  const labelAnchor = polar(CX, CY, PILL_R + 8, angle);
+  const width = Math.max(96, label.length * 12 + 34);
+  const height = 36;
 
   const body = (
     <g style={{ cursor: 'pointer' }} className="plasmid-cutsite">
-      <line x1={tickInner.x} y1={tickInner.y} x2={tickOuter.x} y2={tickOuter.y} stroke={accent} strokeWidth={2} />
-      <circle className="plasmid-cutsite-dot" cx={tickOuter.x} cy={tickOuter.y} r={2.5} fill={accent} />
-      <line x1={tickOuter.x} y1={tickOuter.y} x2={labelAnchor.x} y2={labelAnchor.y} stroke={accent} strokeWidth={1} strokeDasharray="2 2" opacity={0.8} />
+      <line x1={tickInner.x} y1={tickInner.y} x2={tickOuter.x} y2={tickOuter.y} stroke={accent} strokeWidth={3} />
+      <circle className="plasmid-cutsite-dot" cx={tickOuter.x} cy={tickOuter.y} r={3.75} fill={accent} />
+      <line x1={tickOuter.x} y1={tickOuter.y} x2={labelAnchor.x} y2={labelAnchor.y} stroke={accent} strokeWidth={1.5} strokeDasharray="3 3" opacity={0.8} />
       <rect
         x={labelAnchor.x - width / 2}
         y={labelAnchor.y - height / 2}
         width={width}
         height={height}
-        rx={4}
+        rx={6}
         fill="#0a0a0a"
         stroke={accent}
-        strokeWidth={1.25}
+        strokeWidth={1.75}
       />
       <line
-        x1={labelAnchor.x - width / 2 + 4}
-        y1={labelAnchor.y - height / 2 + 4}
-        x2={labelAnchor.x - width / 2 + 4}
-        y2={labelAnchor.y + height / 2 - 4}
+        x1={labelAnchor.x - width / 2 + 6}
+        y1={labelAnchor.y - height / 2 + 6}
+        x2={labelAnchor.x - width / 2 + 6}
+        y2={labelAnchor.y + height / 2 - 6}
         stroke={accent}
-        strokeWidth={2}
+        strokeWidth={3}
       />
       <text
-        x={labelAnchor.x + 3}
+        x={labelAnchor.x + 5}
         y={labelAnchor.y}
         textAnchor="middle"
         dominantBaseline="central"
-        fontSize={13}
+        fontSize={19}
         fontFamily={FONT}
         fontWeight={600}
-        letterSpacing={0.3}
+        letterSpacing={0.4}
         fill={accent}
         style={{ userSelect: 'none' }}
       >
@@ -302,6 +332,7 @@ function OriMarker({ total }) {
 
 export default function PlasmidMap() {
   const [total, setTotal] = useState(null);
+  const [hovered, setHovered] = useState(null);
   const copiedRef = useRef(null);
 
   useEffect(() => {
@@ -346,10 +377,8 @@ export default function PlasmidMap() {
   }
 
   return (
-    <div
-      className="flex items-center justify-center"
-      style={{ position: 'relative', minHeight: '100vh', background: '#000', padding: '24px', overflow: 'hidden' }}
-    >
+    <div className="plasmid-page flex items-center justify-center">
+      <div className="plasmid-topo-bg" aria-hidden="true" />
       <div className="nuc-field" aria-hidden="true">
         {NUCS.map((n, i) => (
           <span
@@ -368,7 +397,7 @@ export default function PlasmidMap() {
         ))}
       </div>
 
-      <div style={{ width: 'min(92vmin, 820px)', height: 'min(92vmin, 820px)', position: 'relative', zIndex: 1 }}>
+      <div className="plasmid-stage">
         <svg viewBox="0 0 1140 1140" width="100%" height="100%" fontFamily={FONT}>
           <style>
             {`
@@ -386,6 +415,29 @@ export default function PlasmidMap() {
 
               .plasmid-highlight { opacity: 0; transition: opacity 0.2s ease; }
               .plasmid-feature:hover .plasmid-highlight { opacity: 1; }
+
+              /* DNA polymerase travels the region only while hovered */
+              .plasmid-pol { opacity: 0; offset-distance: 0%; transition: opacity 0.2s ease; }
+              .plasmid-feature:hover .plasmid-pol {
+                opacity: 1;
+                animation: pol-travel 2.4s linear infinite;
+              }
+              @keyframes pol-travel {
+                from { offset-distance: 0%; }
+                to { offset-distance: 100%; }
+              }
+
+              /* one-time staggered entrance */
+              .plasmid-enter {
+                opacity: 0;
+                transform-box: fill-box;
+                transform-origin: center;
+                animation: feat-in 0.55s ease forwards;
+              }
+              @keyframes feat-in {
+                from { opacity: 0; transform: scale(0.9); }
+                to { opacity: 1; transform: scale(1); }
+              }
 
               .plasmid-cutsite rect { transition: filter 0.15s ease; }
               .plasmid-cutsite:hover rect { filter: brightness(1.6); }
@@ -463,8 +515,8 @@ export default function PlasmidMap() {
             <OriMarker total={total} />
 
             {/* feature arrows */}
-            {features.map((f) => (
-              <Feature key={f.label} feature={f} total={total} clickable={!!f.href} />
+            {features.map((f, i) => (
+              <Feature key={f.label} feature={f} total={total} clickable={!!f.href} index={i} onHover={setHovered} />
             ))}
 
             {/* social cut-sites — spread to three opposing sides of the plasmid */}
@@ -487,20 +539,44 @@ export default function PlasmidMap() {
             </text>
           </g>
 
-          {/* center label - stays fixed while the ring rotates */}
+          {/* center label - stays fixed while the ring rotates. Reads out the
+              hovered feature's name + span, or the default identity otherwise. */}
           <text x={CX} y={CY - 18} textAnchor="middle" fontSize={44} fontWeight={700} fill="#fff" letterSpacing={1}>
             NEEV MANGAL
           </text>
-          <text x={CX} y={CY + 18} textAnchor="middle" fontSize={17} fontWeight={500} fill="#999">
-            Synthetic-Biologist
+          <text x={CX} y={CY + 18} textAnchor="middle" fontSize={17} fontWeight={500} fill={hovered ? hovered.color : '#999'}>
+            {hovered ? hovered.label : 'Synthetic-Biologist'}
           </text>
           <text x={CX} y={CY + 46} textAnchor="middle" fontSize={17} fontWeight={500} fill="#999">
-            {total.toLocaleString()} bp
+            {hovered ? `${hovered.start.toLocaleString()} – ${hovered.end.toLocaleString()} bp` : `${total.toLocaleString()} bp`}
           </text>
         </svg>
       </div>
 
       <style jsx>{`
+        .plasmid-page {
+          position: relative;
+          min-height: 100vh;
+          background: #000;
+          padding: 24px;
+          overflow: hidden;
+        }
+        .plasmid-stage {
+          width: min(92vmin, 820px);
+          height: min(92vmin, 820px);
+          flex-shrink: 0;
+          position: relative;
+          z-index: 1;
+        }
+        @media (max-width: 640px) {
+          .plasmid-page {
+            padding: 0;
+          }
+          .plasmid-stage {
+            width: 100vw;
+            height: 100vw;
+          }
+        }
         .nuc-field {
           position: absolute;
           inset: 0;
