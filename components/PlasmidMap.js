@@ -224,7 +224,7 @@ function wigglyStrand(startBp, endBp, total, baseR, amp, phase) {
   return { d: d.trim(), length };
 }
 
-const TRANSCRIPT_R = BACKBONE_R - 15;
+const TRANSCRIPT_R = BACKBONE_R + 16;
 const TRANSCRIPT_AMP = 6;
 
 // Per-feature @keyframes that morph the path `d` between phase-shifted wiggles,
@@ -509,8 +509,7 @@ export default function PlasmidMap() {
               @keyframes transcript-grow {
                 0%   { stroke-dashoffset: var(--tlen); opacity: 0; }
                 7%   { opacity: 0.9; }
-                90%  { opacity: 0.9; }
-                100% { stroke-dashoffset: 0; opacity: 0; }
+                100% { stroke-dashoffset: 0; opacity: 0.9; }
               }
               ${wiggleKeyframes}
 
