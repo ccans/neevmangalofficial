@@ -448,3 +448,50 @@ html {
   z-index: 0;
 }
 /* end plasmid-topo-bg */
+
+/* about-me: dark, blue, two-column (DNA helix left, existing content right) */
+.aboutme-page {
+  min-height: 100vh;
+  display: flex;
+  background:
+    radial-gradient(1000px 720px at 24% 26%, #1b3f86 0%, rgba(10, 20, 52, 0) 62%),
+    linear-gradient(160deg, #0b1940 0%, #08122e 52%, #030916 100%);
+  color: #c6d3f2;
+}
+.aboutme-helix {
+  flex: 0 0 42%;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.aboutme-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.aboutme-content h1 {
+  color: #e2ecff;
+}
+.aboutme-content h4 {
+  color: #b7c6ec !important;
+}
+.aboutme-content strong {
+  color: #7fb6ff;
+}
+.aboutme-content em {
+  color: #9fd2ff;
+}
+
+@media (max-width: 768px) {
+  .aboutme-page {
+    flex-direction: column;
+  }
+  .aboutme-helix {
+    flex: none;
+    position: relative;
+    height: 44vh;
+  }
+}
