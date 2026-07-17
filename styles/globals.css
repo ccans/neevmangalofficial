@@ -471,18 +471,46 @@ html {
 .aboutme-content {
   flex: 1 1 auto;
   min-width: 0;
+  display: flex;
+  align-items: flex-start;
 }
-.aboutme-content h1 {
-  color: #e2ecff;
+.aboutme-copy {
+  padding: 104px 8% 72px 4%;
+  max-width: 780px;
 }
-.aboutme-content h4 {
-  color: #b7c6ec !important;
+.aboutme-title {
+  font-family: 'Blog-Title-Font';
+  color: #eaf1ff;
+  font-size: clamp(3rem, 6.5vw, 6rem);
+  line-height: 1.02;
+  letter-spacing: 1px;
 }
-.aboutme-content strong {
+.aboutme-tagline {
+  margin-top: 16px;
+  font-family: 'Rajdhani', sans-serif;
+  color: #74b0ff;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: clamp(0.82rem, 1.3vw, 1.05rem);
+}
+.aboutme-bio {
+  margin-top: 30px;
+  font-family: monospace;
+  color: #b7c6ec;
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  line-height: 1.85;
+}
+.aboutme-bio p {
+  margin-bottom: 18px;
+}
+.aboutme-bio strong {
   color: #7fb6ff;
+  font-weight: 700;
 }
-.aboutme-content em {
+.aboutme-bio em {
   color: #9fd2ff;
+  font-style: italic;
 }
 
 @media (max-width: 768px) {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Head from 'next/head'
-import BlogStripe from '../components/BlogStripe';
+import AboutContent from '../components/AboutContent';
 import DnaHelix from '../components/DnaHelix';
 
 function aboutme() {
@@ -19,7 +19,7 @@ function aboutme() {
                     <DnaHelix />
                 </div>
                 <div className="aboutme-content">
-                    <BlogStripe />
+                    <AboutContent />
                 </div>
             </main>
 

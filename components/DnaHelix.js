@@ -6,7 +6,7 @@ import React from 'react';
 // Accuracy: B-DNA has ~10.5 base pairs per helical turn and a
 // diameter:rise ratio of ~2.9, both reproduced here — BP_PER_TURN sets the
 // per-rung phase advance, and the orbit radius R ≈ 2.9 × the rung spacing.
-const ROWS = 36;
+const ROWS = 54; // tall enough to run off the top and bottom of the viewport
 const SPACING = 20; // px between rungs (the "rise")
 const PERIOD = 12; // seconds per full turn (slow)
 const BP_PER_TURN = 10.5;
@@ -37,6 +37,9 @@ export default function DnaHelix() {
           position: relative;
           width: 190px;
           height: ${ROWS * SPACING}px;
+          /* slight slant: enters from the bottom-left, exits off the top */
+          transform: translateY(-40px) rotate(16deg);
+          transform-origin: center;
           filter: drop-shadow(0 0 24px rgba(56, 130, 246, 0.25));
         }
         .dna-row {
