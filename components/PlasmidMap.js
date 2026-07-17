@@ -588,8 +588,8 @@ export default function PlasmidMap() {
             {hovered && <Polymerase key={hovered.label} feature={hovered} total={total} />}
 
             {/* backbone */}
-            <circle cx={CX} cy={CY} r={BACKBONE_R} fill="none" stroke="#666" strokeWidth={2} />
-            <circle cx={CX} cy={CY} r={BACKBONE_R - 6} fill="none" stroke="#666" strokeWidth={1} />
+            <circle cx={CX} cy={CY} r={BACKBONE_R} fill="none" stroke="var(--pm-line)" strokeWidth={2} />
+            <circle cx={CX} cy={CY} r={BACKBONE_R - 6} fill="none" stroke="var(--pm-line)" strokeWidth={1} />
 
             {/* tick marks */}
             {ticks.map((bp) => {
@@ -599,7 +599,7 @@ export default function PlasmidMap() {
               const { x, y, rotate } = labelTransform(CX, CY, TICK_R, bp, total);
               return (
                 <g key={bp}>
-                  <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#666" strokeWidth={1.5} />
+                  <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="var(--pm-line)" strokeWidth={1.5} />
                   <text
                     x={x}
                     y={y}
@@ -608,7 +608,7 @@ export default function PlasmidMap() {
                     dominantBaseline="central"
                     fontSize={13}
                     fontWeight={500}
-                    fill="#777"
+                    fill="var(--pm-muted)"
                   >
                     {bp.toLocaleString()}
                   </text>
@@ -645,13 +645,13 @@ export default function PlasmidMap() {
 
           {/* center label - stays fixed while the ring rotates. Reads out the
               hovered feature's name + span, or the default identity otherwise. */}
-          <text x={CX} y={CY - 18} textAnchor="middle" fontSize={44} fontWeight={700} fill="#fff" letterSpacing={1}>
+          <text x={CX} y={CY - 18} textAnchor="middle" fontSize={44} fontWeight={700} fill="var(--pm-title)" letterSpacing={1}>
             NEEV MANGAL
           </text>
-          <text x={CX} y={CY + 18} textAnchor="middle" fontSize={17} fontWeight={500} fill={hovered ? hovered.color : '#999'}>
+          <text x={CX} y={CY + 18} textAnchor="middle" fontSize={17} fontWeight={500} fill={hovered ? hovered.color : 'var(--pm-muted)'}>
             {hovered ? hovered.label : 'Synthetic-Biologist'}
           </text>
-          <text x={CX} y={CY + 46} textAnchor="middle" fontSize={17} fontWeight={500} fill="#999">
+          <text x={CX} y={CY + 46} textAnchor="middle" fontSize={17} fontWeight={500} fill="var(--pm-muted)">
             {hovered ? `${hovered.start.toLocaleString()} – ${hovered.end.toLocaleString()} bp` : `${total.toLocaleString()} bp`}
           </text>
         </svg>
@@ -661,9 +661,10 @@ export default function PlasmidMap() {
         .plasmid-page {
           position: relative;
           min-height: 100vh;
-          background: #000;
+          background: var(--pm-bg);
           padding: 24px;
           overflow: hidden;
+          transition: background-color 0.4s ease;
         }
         .plasmid-stage {
           width: min(92vmin, 820px);

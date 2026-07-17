@@ -15,22 +15,26 @@ function AboutContent() {
       </motion.h1>
 
       <motion.p className="aboutme-tagline" initial="hidden" animate="visible" variants={fade(0.3)}>
-        Senior at Wayzata High School · Plymouth, Minnesota
+        Chemical Engineering @ Caltech · Biomolecular + Computational
       </motion.p>
 
       <motion.div className="aboutme-bio" initial="hidden" animate="visible" variants={fade(0.5)}>
         <p>
-          I'm Neev — a high school senior who captains my school's <strong>robotics</strong> and{' '}
-          <strong>debate</strong> teams and spends the rest of my time following curiosity wherever it leads.
+          I'm Neev — a Chemical Engineering student at <strong>Caltech</strong> on the biomolecular and
+          computational tracks, drawn to problems that live where biology meets code.
         </p>
         <p>
-          Lately that's meant detecting exoplanets for the <strong>AAVSO</strong>, mapping ocean plastics
-          with a professor at the <strong>University of Minnesota</strong>, photographing planets through a
-          telescope in my backyard, and writing the occasional blog piece — political and otherwise.
+          In the <strong>Shapiro Lab</strong> I engineer <em>acoustic biosensors</em>, reprogramming
+          gas-vesicle proteins so a protease makes them buckle under ultrasound. At{' '}
+          <strong>Cedars-Sinai</strong> I build machine-learning tools — CNNs and random forests — that help
+          surgeons weigh risk, and I first fell for ML mapping ocean plastics from satellite data at the{' '}
+          <strong>University of Minnesota</strong>.
         </p>
         <p>
-          This site is where all of it lives: a personal <em>magnum opus</em> built from years of learning to
-          program. Poke around — my astrophotography and writing are the parts I'm proudest of.
+          Beyond the bench I've modeled manipulators for Caltech's Mars rover team, raised{' '}
+          <strong>$50k+</strong> for Caltech Racing, and shipped web apps used by 20,000+ people. This site is
+          my personal <em>magnum opus</em> — take a look around; the astrophotography and writing are the
+          parts I'm proudest of.
         </p>
       </motion.div>
     </div>
