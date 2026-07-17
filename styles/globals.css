@@ -541,34 +541,17 @@ html {
   --toggle-bg: rgba(255, 255, 255, 0.06);
   --toggle-border: rgba(255, 255, 255, 0.16);
 }
-:root[data-theme="light"] {
-  --page-bg: navajowhite;
-  --text: #1c1c1c;
-  --content-bg: navajowhite;
-  --pm-bg: navajowhite;
-  --pm-title: #2b2b2b;
-  --pm-muted: #806f4c;
-  --pm-line: #b39a68;
-  --header-text: #6b6b6b;
-  --header-text-hover: #111111;
-  --toggle-fg: #4a4a4a;
-  --toggle-bg: rgba(0, 0, 0, 0.05);
-  --toggle-border: rgba(0, 0, 0, 0.16);
-}
-
 .app-shell {
   background: var(--page-bg);
   min-height: 100vh;
   transition: background-color 0.4s ease;
 }
-[data-theme] body {
+body {
   background: var(--page-bg);
-}
-[data-theme="dark"] body {
   color: var(--text);
 }
 
-/* lowkey, transparent header (no white stripe) */
+/* lowkey, transparent header (no background) */
 .header-bar {
   background: transparent;
 }
@@ -579,74 +562,27 @@ html {
 .header-nav p:hover {
   color: var(--header-text-hover);
 }
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  margin-right: 8px;
-  border-radius: 50%;
-  color: var(--toggle-fg);
-  background: var(--toggle-bg);
-  border: 1px solid var(--toggle-border);
-  cursor: pointer;
-  transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
-}
-.theme-toggle:hover {
-  color: var(--header-text-hover);
-  transform: rotate(15deg);
-}
 
-/* content pages follow the theme (photo gallery stays dark for the images) */
+/* content pages are dark (photo gallery keeps its own dark bg for the images) */
 .blogBg:not(.astrophot-bg) {
   background-color: var(--content-bg) !important;
 }
-[data-theme="dark"] .blogBg,
-[data-theme="dark"] .blogBg h1,
-[data-theme="dark"] .blogBg h4,
-[data-theme="dark"] .blogBg p,
-[data-theme="dark"] .blogBg strong,
-[data-theme="dark"] .blogBg em {
+.blogBg:not(.astrophot-bg),
+.blogBg:not(.astrophot-bg) h1,
+.blogBg:not(.astrophot-bg) h4,
+.blogBg:not(.astrophot-bg) p,
+.blogBg:not(.astrophot-bg) strong,
+.blogBg:not(.astrophot-bg) em {
   color: #e6e6e6;
 }
 
-/* blanket dark-mode fixes for legacy Tailwind color utilities */
-[data-theme="dark"] .text-black {
+/* legacy Tailwind color utilities, adapted for the dark site */
+.text-black {
   color: #e8e8e8 !important;
 }
-[data-theme="dark"] .border-black {
+.border-black {
   border-color: #5a5a5a !important;
 }
-[data-theme="dark"] .bg-white {
+.bg-white {
   background-color: #111214 !important;
-}
-
-/* about-me: light-mode (navajowhite) overrides */
-[data-theme="light"] .aboutme-page {
-  background:
-    radial-gradient(1000px 720px at 24% 26%, #ffe8c4 0%, rgba(255, 222, 173, 0) 62%),
-    navajowhite;
-  color: #2a2a2a;
-}
-[data-theme="light"] .aboutme-title {
-  color: #22314a;
-}
-[data-theme="light"] .aboutme-tagline {
-  color: #2f6fb0;
-}
-[data-theme="light"] .aboutme-bio {
-  color: #37424f;
-}
-[data-theme="light"] .aboutme-bio strong {
-  color: #1f5fa8;
-}
-[data-theme="light"] .aboutme-bio em {
-  color: #6a52b8;
-}
-
-/* plasmid landing: light-mode topo lines flip dark */
-[data-theme="light"] .plasmid-topo-bg {
-  filter: invert(1);
-  opacity: 0.4;
 }
