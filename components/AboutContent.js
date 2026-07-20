@@ -21,20 +21,14 @@ function AboutContent() {
       <motion.div className="aboutme-bio" initial="hidden" animate="visible" variants={fade(0.5)}>
         <p>
           I'm Neev — a Chemical Engineering student at <strong>Caltech</strong> on the biomolecular and
-          computational tracks, drawn to problems that live where biology meets code.
+          computational tracks. I'm interested in the intersection of biology and computation, 
+          exploring how code can help us understand and engineer biological systems, particularly as it 
+          relates to <em> de novo </em> protein design and synthetic biological circuits. 
         </p>
         <p>
-          In the <strong>Shapiro Lab</strong> I engineer <em>acoustic biosensors</em>, reprogramming
-          gas-vesicle proteins so a protease makes them buckle under ultrasound. At{' '}
-          <strong>Cedars-Sinai</strong> I build machine-learning tools — CNNs and random forests — that help
-          surgeons weigh risk, and I first fell for ML mapping ocean plastics from satellite data at the{' '}
-          <strong>University of Minnesota</strong>.
-        </p>
-        <p>
-          Beyond the bench I've modeled manipulators for Caltech's Mars rover team, raised{' '}
-          <strong>$50k+</strong> for Caltech Racing, and shipped web apps used by 20,000+ people. This site is
-          my personal <em>magnum opus</em> — take a look around; the astrophotography and writing are the
-          parts I'm proudest of.
+          I originally programmed this website in high school the good old-fashioned way. I have since
+          augmented and redesigned the pages with the help of Claude, although the underlying framework remains 
+          my own. Check out 
         </p>
       </motion.div>
     </div>
