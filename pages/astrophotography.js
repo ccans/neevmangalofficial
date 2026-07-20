@@ -53,20 +53,6 @@ function astrophotography() {
 
                 <div className='astrophot-phot'>                    <img src="/moon3.jpg" className='astrophot-phot-photlong' /></div>
 
-                <div className='astrophot-subtxt'> My Tools </div>
-                <div className='astrophot-phot'>
-                    <img src="/JupiterI.jpg" className='astrophot-phot-phot' />
-                    <div>  </div>
-                </div>
-
-                {/* <div className='astrophot-subtxt'> Methods </div>
-                <div className='astrophot-phot'>
-
-                </div>
-                <div className='astrophot-subtxt'> Featured </div>
-                <div className='astrophot-phot'>
-
-                </div> */}
             </main>
 
             <footer className="fixed bottom-0 w-screen text-center text-gray-300">
