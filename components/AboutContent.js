@@ -28,7 +28,7 @@ function AboutContent() {
         <p>
           I originally programmed this website in high school the good old-fashioned way. I have since
           augmented and redesigned the pages with the help of Claude, although the underlying framework remains 
-          my own. Check out 
+          my own. Check it out! 
         </p>
       </motion.div>
     </div>
